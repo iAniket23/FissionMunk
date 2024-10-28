@@ -1,3 +1,6 @@
+# Import Neutron file from objects package
+import pygame
+import pymunk
 # This file contains the Neutron class which is used to create neutron objects
 import pymunk
 
@@ -66,3 +69,27 @@ class Neutron:
 
     def set_fission_speed(self, fission_speed):
         self.fission_speed = fission_speed
+pygame.init()
+display = pygame.display.set_mode((600, 600))
+clock = pygame.time.Clock()
+space = pymunk.Space()
+FPS = 60
+
+# Create a neutron object
+neutron = Neutron(100, (300, 300), 200, 0.1, 1, space)
+neutron.add_to_space()
+def game():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+        display.fill((255, 255, 255))
+        pos = int(neutron.get_position.x), 600 - int(neutron.get_position.y)
+        pygame.draw.circle(display, (0, 0, 0), pos, int(neutron.get_radius), 1)
+        pygame.display.update()
+        clock.tick(FPS)
+        space.step(1/FPS)
+
+game()
+pygame.quit()
+
