@@ -2,13 +2,12 @@
 import pymunk
 class Neutron:
     # Constructor
-    def __init__(self, speed, position, fission_speed, mass=0.1, radius=1, space=None, color=(128, 128, 128)):
+    def __init__(self, speed, position, mass=0.1, radius=1, space=None):
         self.speed = speed
         self.position = position
         self.mass = mass
         self.radius = radius
-        self.fission_speed = fission_speed
-        self.color = color
+
         self.space = space
         self.body = None
         self.shape = self.create_neutron()
@@ -48,9 +47,6 @@ class Neutron:
     def get_radius(self):
         return self.radius
 
-    def get_fission_speed(self):
-        return self.fission_speed
-
     def get_body(self):
         return self.body
 
@@ -62,12 +58,6 @@ class Neutron:
 
     def get_space(self):
         return self.space
-
-    def get_color(self):
-        return self.color
-
-    def set_color(self, color):
-        self.color = color
 
     def set_speed(self, speed):
         self.speed = speed
@@ -82,9 +72,6 @@ class Neutron:
 
     def set_radius(self, radius):
         self.radius = radius
-
-    def set_fission_speed(self, fission_speed):
-        self.fission_speed = fission_speed
 
     def set_body(self, body):
         self.body = body
