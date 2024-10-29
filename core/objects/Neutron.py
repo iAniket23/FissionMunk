@@ -1,4 +1,4 @@
-# This file contains the Neutron class which is used to create neutron objects
+# Neutron class
 import pymunk
 
 class Neutron:
