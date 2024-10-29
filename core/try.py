@@ -2,6 +2,7 @@
 import pygame
 import pymunk
 from objects.Neutron import Neutron
+from objects.Core import Core
 
 # Initialize Pygame
 pygame.init()
@@ -10,9 +11,14 @@ clock = pygame.time.Clock()
 space = pymunk.Space()
 FPS = 60
 
-# Create a neutron object with velocity as a 2D vector (e.g., x, y)
-neutron = Neutron((100, 0), (300, 300), 200, 0.1, 5, space)
-neutron.add_to_space()
+# Create a core object
+core = Core()
+
+# Create a neutron object
+neutron = Neutron(core.get_fast_speed(), (300, 300), 0.1, 5)
+
+# Add the neutron to the core
+core.add_to_core(neutron)
 
 def game():
     while True:
@@ -33,7 +39,7 @@ def game():
         clock.tick(FPS)
         
         # Step the physics simulation
-        space.step(1 / FPS)
+        core.get_space().step(1 / FPS)
 
 game()
 pygame.quit()
