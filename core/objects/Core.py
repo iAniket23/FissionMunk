@@ -2,7 +2,7 @@
 import pymunk
 
 class Core:
-    def __init__(self, fission_speed = (5, 0), thermal_speed = (1, 0), cold_speed = (0.5, 0), factor = 100):
+    def __init__(self, fission_speed = (20, 0), thermal_speed = (1, 0), cold_speed = (0.5, 0), factor = 100):
 
         self.fast_speed = pymunk.Vec2d(fission_speed[0], fission_speed[1]) * factor
 
@@ -19,6 +19,14 @@ class Core:
             print(e)
         else:
             print("Object added to core successfully")
+
+    def remove_from_core(self, neutron):
+        try:
+            self.space.remove(neutron.get_body(), neutron.get_shape())
+        except Exception as e:
+            print(e)
+        else:
+            print("Object removed from core successfully")
 
     # Getters and setters
     def get_space(self):

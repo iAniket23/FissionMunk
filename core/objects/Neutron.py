@@ -10,6 +10,8 @@ class Neutron:
         self.radius = radius
         self.moment_inertia = self.initialize_moment_inertia()
         self.body, self.shape = self.create_neutron()
+        self.shape.elasticity = 1
+        self.shape.collision_type = 1
 
 
     # Create a neutron object
@@ -44,6 +46,8 @@ class Neutron:
     def set_speed(self, speed):
         try:
             self.speed = speed
+            self.body.velocity = self.speed
+
         except Exception as e:
             print(e)
         else:
