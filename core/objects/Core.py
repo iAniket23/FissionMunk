@@ -2,7 +2,7 @@
 import pymunk
 
 class Core:
-    def __init__(self, fission_speed = (20, 0), thermal_speed = (1, 0), cold_speed = (0.5, 0), factor = 100):
+    def __init__(self, fission_speed = (40, 0), thermal_speed = (10, 0), cold_speed = (5, 0), factor = 100):
 
         self.fast_speed = pymunk.Vec2d(fission_speed[0], fission_speed[1]) * factor
 

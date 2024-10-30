@@ -1,6 +1,5 @@
 # Import Neutron file from objects package
 import pygame
-import pymunk
 from objects.Neutron import Neutron
 from objects.Core import Core
 from objects.Moderator import Moderator
