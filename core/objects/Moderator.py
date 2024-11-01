@@ -18,10 +18,10 @@ class Moderator:
         self.shape.sensor = True
 
     def create_non_water_moderator(self):
-        rect_body = pymunk.Body(body_type=pymunk.Body.STATIC)
-        rect_shape = pymunk.Poly.create_box(rect_body, (self.length, self.width))
-        rect_body.position = self.position
-        return rect_body, rect_shape
+        polygon_body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        polygon_shape = pymunk.Poly(polygon_body, [(0, 0), (0, self.width), (self.length, self.width), (self.length, 0)])
+        polygon_body.position = self.position
+        return polygon_body, polygon_shape
 
     def create_water_moderator(self):
         pass
