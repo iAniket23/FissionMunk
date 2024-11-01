@@ -27,7 +27,9 @@ class Neutron:
         circle_moment_inertia = pymunk.moment_for_circle(self.mass, 0, self.radius)
         return circle_moment_inertia
 
-
+    def probability(self):
+        pass
+    
     # Getters and Setters
     def get_moment_inertia(self):
         return self.moment_inertia
