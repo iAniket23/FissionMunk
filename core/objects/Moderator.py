@@ -5,6 +5,7 @@ from .Material import MaterialType as Material
 
 class Moderator:
     def __init__(self, length, width, position, material = Material.WATER):
+        # switch length and width
         self.length = length
         self.width = width
         self.position = position
@@ -18,10 +19,10 @@ class Moderator:
         self.shape.sensor = True
 
     def create_non_water_moderator(self):
-        polygon_body = pymunk.Body(body_type=pymunk.Body.STATIC)
-        polygon_shape = pymunk.Poly(polygon_body, [(0, 0), (0, self.width), (self.length, self.width), (self.length, 0)])
-        polygon_body.position = self.position
-        return polygon_body, polygon_shape
+        rect_body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        rect_shape = pymunk.Poly.create_box(rect_body, (self.length, self.width))
+        rect_body.position = self.position
+        return rect_body, rect_shape
 
     def create_water_moderator(self):
         pass
@@ -74,6 +75,8 @@ class Moderator:
     def set_position(self, position):
         try:
             self.position = position
+            if self.body:
+                self.body.position = position
         except Exception as e:
             print(e)
         else:

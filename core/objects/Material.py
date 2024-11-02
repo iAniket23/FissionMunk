@@ -5,3 +5,5 @@ class MaterialType(enum.Enum):
     GRAPHITE = "graphite"
     BORON = "boron"
     XENON = "xenon"
+    FISSILE = "fissile"
+    NON_FISSILE = "non-fissile"
