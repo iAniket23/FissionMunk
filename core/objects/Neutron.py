@@ -2,17 +2,23 @@
 import pymunk
 
 class Neutron:
+    body_to_neutron = {}
+
     # Constructor
     def __init__(self, speed, position, mass=0.1, radius=1):
         self.speed = speed
         self.position = position
         self.mass = mass
         self.radius = radius
+
         self.moment_inertia = self.initialize_moment_inertia()
+
         self.body, self.shape = self.create_neutron()
+
         self.shape.elasticity = 1
         self.shape.collision_type = 1
 
+        Neutron.body_to_neutron[(self.body, self.shape)] = self
 
     # Create a neutron object
     def create_neutron(self):
@@ -26,7 +32,6 @@ class Neutron:
     def initialize_moment_inertia(self):
         circle_moment_inertia = pymunk.moment_for_circle(self.mass, 0, self.radius)
         return circle_moment_inertia
-
 
     # Getters and Setters
     def get_moment_inertia(self):
