@@ -13,8 +13,7 @@ class Core:
         self.neutron_list = []
         self.moderator_list = []
         self.control_rod_list = []
-
-        # self.fuel_rod_list = []
+        self.fuel_rod_list = []
 
     def add_neutron_to_core(self, neutron):
         try:
@@ -70,6 +69,29 @@ class Core:
         else:
             print("Object removed from core successfully")
 
+    def add_fuel_rod_to_core(self, fuel_rod):
+        try:
+            for fuel_element in fuel_rod.get_fuel_elements():
+                self.space.add(fuel_element.get_body(), fuel_element.get_shape())
+                self.space.add(fuel_element.get_water_body(), fuel_element.get_water_shape())
+                self.fuel_rod_list.append(fuel_rod)
+
+        except Exception as e:
+            print(e)
+        else:
+            print("Object added to core successfully")
+
+    def remove_fuel_rod_from_core(self, fuel_rod):
+        try:
+            for fuel_element in fuel_rod.get_fuel_elements():
+                self.space.remove(fuel_element.get_body(), fuel_element.get_shape())
+                self.space.remove(fuel_element.get_water_body(), fuel_element.get_water_shape())
+                self.fuel_rod_list.remove(fuel_rod)
+        except Exception as e:
+            print(e)
+        else:
+            print("Object removed from core successfully")
+
     # Getters and setters
     def get_neutron_list(self):
         return self.neutron_list
@@ -80,6 +102,9 @@ class Core:
     def get_control_rod_list(self):
         return self.control_rod_list
 
+    def get_fuel_rod_list(self):
+        return self.fuel_rod_list
+    
 
     def get_space(self):
         return self.space
