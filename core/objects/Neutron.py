@@ -15,7 +15,6 @@ class Neutron:
 
         self.body, self.shape = self.create_neutron()
 
-        # self.shape.elasticity = 1
         self.shape.collision_type = 1
 
         self.shape.sensor = True

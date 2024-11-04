@@ -1,4 +1,5 @@
 import math
+import pymunk
 from objects.Neutron import Neutron
 from objects.Fuel import FuelElement
 from .Material import MaterialType as Material
@@ -6,7 +7,7 @@ class Mechanics:
     def __init__(self, core = None):
         self.core = core
         self.space = core.get_space()
-        self.angle_offset = math.radians(20)
+        self.angle_offset = math.radians(30)
 
         # Set the collision handler for neutron and moderator
         NMC_handler = self.space.add_collision_handler(1, 2)
@@ -24,9 +25,23 @@ class Mechanics:
         try:
             neutron_shape, moderator_shape = arbiter.shapes
             # Get the neutron's speed
+            current_velocity = neutron_shape.body.velocity
 
-            neutron_shape.body.velocity = self.core.get_thermal_speed()
+            if abs(current_velocity.length - self.core.fast_speed.length) < 0.5:
+                # Get the collision normal, which represents the moderator surface at the collision point
+                collision_normal = arbiter.contact_point_set.normal
 
+                # Calculate the reflection of the current velocity across the collision normal
+                dot_product = current_velocity.dot(collision_normal)
+                reflected_direction = current_velocity - 2 * dot_product * collision_normal
+                reflected_direction = reflected_direction.normalized()  # Normalize to get direction only
+
+                # Set the reflected direction to thermal speed
+                thermal_speed_magnitude = self.core.thermal_speed.length
+                new_velocity = reflected_direction * thermal_speed_magnitude
+
+                # Apply the new velocity to the neutron
+                neutron_shape.body.velocity = new_velocity
         except Exception as e:
             print(e)
         else:
@@ -55,19 +70,43 @@ class Mechanics:
             fuel_element = FuelElement.body_to_fuel_element[(fuel_element_shape.body, fuel_element_shape)]
 
             neutron_velocity = neutron.body.velocity
-            # Check if the neutron is a thermal neutron by checking it's translational speed
 
+            neutron_speed = neutron_velocity.length
 
+            threshold = 0.5
 
-            if neutron_velocity.x != 0:
+            if abs(neutron_speed - self.core.thermal_speed.length) <= threshold:
                 fuel_element.set_material(Material.NON_FISSILE)
+                # Original direction
+                direction = neutron_velocity.normalized()
 
-                old_speed = neutron.body.velocity
-                x = old_speed.x * math.cos(self.angle_offset) - old_speed.y * math.sin(self.angle_offset)
-                y = old_speed.x * math.sin(self.angle_offset) + old_speed.y * math.cos(self.angle_offset)
+                # Small angle offset in radians for deviation (5 degrees)
+                small_angle_offset = self.angle_offset
 
-                new_speed_n1 = (x, y)
-                new_speed_n2 = (x, -y)
+                # Calculate the two slightly different directions
+                x1 = direction.x * math.cos(small_angle_offset) - direction.y * math.sin(small_angle_offset)
+                y1 = direction.x * math.sin(small_angle_offset) + direction.y * math.cos(small_angle_offset)
+                new_direction_n1 = pymunk.Vec2d(x1, y1)
+
+                x2 = direction.x * math.cos(-small_angle_offset) - direction.y * math.sin(-small_angle_offset)
+                y2 = direction.x * math.sin(-small_angle_offset) + direction.y * math.cos(-small_angle_offset)
+                new_direction_n2 = pymunk.Vec2d(x2, y2)
+
+                # Set the new speed for both directions to fast speed
+                fast_speed_magnitude = self.core.fast_speed.length
+                new_speed_n1 = new_direction_n1 * fast_speed_magnitude
+                new_speed_n2 = new_direction_n2 * fast_speed_magnitude
+
+
+                # direction = neutron_velocity.normalized()
+                # fast_speed_magnitude = self.core.fast_speed.length
+                # new_speed = direction * fast_speed_magnitude
+
+                # x = new_speed.length * math.cos(self.angle_offset)
+                # y = new_speed.length * math.sin(self.angle_offset)
+
+                # new_speed_n1 = (x, y)
+                # new_speed_n2 = (x, -y)
 
                 neutron1 = Neutron(speed=new_speed_n1, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
                 neutron2 = Neutron(speed=new_speed_n2, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())

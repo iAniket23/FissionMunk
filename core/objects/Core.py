@@ -3,10 +3,10 @@ from .Neutron import Neutron
 import pymunk
 
 class Core:
-    def __init__(self, fission_speed = (40, 0), thermal_speed = (5, 0), cold_speed = (1, 0), factor = 100):
-        self.fast_speed = pymunk.Vec2d(fission_speed[0], fission_speed[1]) * factor
-        self.thermal_speed = pymunk.Vec2d(thermal_speed[0], thermal_speed[1]) * factor
-        self.cold_speed = pymunk.Vec2d(cold_speed[0], cold_speed[1]) * factor
+    def __init__(self, neutron_speed = (40, 0), thermal_factor = 50, cold_factor = 10, fast_factor = 100):
+        self.fast_speed = pymunk.Vec2d(neutron_speed[0], neutron_speed[1]) * fast_factor
+        self.thermal_speed = pymunk.Vec2d(neutron_speed[0], neutron_speed[1]) * thermal_factor
+        self.cold_speed = pymunk.Vec2d(neutron_speed[0], neutron_speed[1]) * cold_factor
 
         self.space = pymunk.Space()
 
@@ -104,7 +104,7 @@ class Core:
 
     def get_fuel_rod_list(self):
         return self.fuel_rod_list
-    
+
 
     def get_space(self):
         return self.space
