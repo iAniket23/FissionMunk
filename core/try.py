@@ -18,29 +18,29 @@ FPS = 100
 core = Core(factor=10)
 
 # Create a neutron object
-neutron = Neutron(speed=core.get_fast_speed(), position=(0, 100), mass=0.1, radius=5)
+neutron = Neutron(speed=core.get_thermal_speed(), position=(0, 100), mass=0.1, radius=5)
 
-# Add Moderator to the core
-moderator = Moderator(length=10, width=600, position=(388, 300), material=Material.GRAPHITE)
-# moderator2 = Moderator(length=10, width=600, position=(200, 300), material=Material.GRAPHITE)
+# # Add Moderator to the core
+# moderator = Moderator(length=10, width=600, position=(288, 300), material=Material.GRAPHITE)
+# # moderator2 = Moderator(length=10, width=600, position=(200, 300), material=Material.GRAPHITE)
 
 # Add Control Rod to the core
-control_rod = ControlRod(length=10, width=600, position=(493, 300), material=Material.BORON_CARBIDE)
-# control_rod2 = ControlRod(length=10, width=600, position=(300, 300), material=Material.BORON_CARBIDE)
+# control_rod = ControlRod(length=10, width=600, position=(493, 300), material=Material.BORON_CARBIDE)
+# # control_rod2 = ControlRod(length=10, width=600, position=(300, 300), material=Material.BORON_CARBIDE)
 
 for i in range(20, 600, 35):
-    fuel_rod = Fuel(occurence_probability=0.03, fuel_element_gap=5, length=30, width=560, position=(i, 30), water_bool=True)
+    fuel_rod = Fuel(occurence_probability=0.3, fuel_element_gap=5, length=30, width=560, position=(i, 30), water_bool=True)
     core.add_fuel_rod_to_core(fuel_rod)
 
 # Add the neutron to the core
 core.add_neutron_to_core(neutron)
 
-# Add the moderator to the core
-core.add_moderator_to_core(moderator)
-# core.add_moderator_to_core(moderator2)
+# # Add the moderator to the core
+# core.add_moderator_to_core(moderator)
+# # core.add_moderator_to_core(moderator2)
 
 # Add the control rod to the core
-core.add_control_rod_to_core(control_rod)
+# core.add_control_rod_to_core(control_rod)
 # core.add_control_rod_to_core(control_rod2)
 
 # Create a mechanics object

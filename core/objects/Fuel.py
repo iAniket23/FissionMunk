@@ -27,6 +27,7 @@ class Fuel:
         return self.fuel_elements
 
 class FuelElement:
+    body_to_fuel_element = {}
     def __init__(self, length, water_bool = True, material = Material.FISSILE):
         self.material = material
         self.length = length
@@ -37,7 +38,6 @@ class FuelElement:
         if self.water_bool:
             self.water_body, self.water_shape = self.create_water()
 
-
         self.body, self.shape = self.create_non_uranium_fuel_element() if self.material == Material.NON_FISSILE else self.create_uranium_fuel_element()
 
         if self.material == Material.FISSILE:
@@ -45,9 +45,12 @@ class FuelElement:
         elif self.material == Material.NON_FISSILE:
             self.shape.collision_type = 4
 
+        FuelElement.body_to_fuel_element[(self.body, self.shape)] = self
+
     def create_uranium_fuel_element(self):
         fuel_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         fuel_shape = pymunk.Circle(fuel_body, self.radius)
+
         fuel_shape.sensor = True
         return fuel_body, fuel_shape
 
@@ -61,6 +64,7 @@ class FuelElement:
         water_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         water_shape = pymunk.Poly.create_box(water_body, (self.length, self.length))
         water_shape.sensor = True
+        water_shape.collision_type = 6
 
         return water_body, water_shape
 

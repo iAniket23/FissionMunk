@@ -1,6 +1,6 @@
 # Neutron class
 import pymunk
-
+import random
 class Neutron:
     body_to_neutron = {}
 
@@ -15,8 +15,10 @@ class Neutron:
 
         self.body, self.shape = self.create_neutron()
 
-        self.shape.elasticity = 1
+        # self.shape.elasticity = 1
         self.shape.collision_type = 1
+
+        self.shape.sensor = True
 
         Neutron.body_to_neutron[(self.body, self.shape)] = self
 
