@@ -1,5 +1,6 @@
 import math
 import pymunk
+import random
 from objects.Neutron import Neutron
 from objects.Fuel import FuelElement
 from .Material import MaterialType as Material
@@ -101,6 +102,11 @@ class Mechanics:
 
                 neutron1 = Neutron(speed=new_speed_n1, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
                 neutron2 = Neutron(speed=new_speed_n2, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
+
+                if random.random() < 0.3:
+                    new_speed_n3 = -direction * fast_speed_magnitude
+                    neutron3 = Neutron(speed=new_speed_n3, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
+                    self.core.add_neutron_to_core(neutron3)
 
                 self.core.add_neutron_to_core(neutron1)
                 self.core.add_neutron_to_core(neutron2)

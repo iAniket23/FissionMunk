@@ -80,15 +80,14 @@ class FuelElement:
     def random_fissile_material(self):
         if self.material == Material.NON_FISSILE:
             prob = random.random()
-            if prob < 0.000005:
+            if prob < 0.00001:
                 self.set_material(Material.XENON)
-            elif prob < 0.00001:
+            elif prob < 0.0001:
                 self.set_material(Material.FISSILE)
         elif self.material == Material.XENON:
             prob = random.random()
             if prob < 0.0001:
                 self.set_material(Material.NON_FISSILE)
-                print("Xenon to non fissile")
 
 
     def get_body(self):
