@@ -14,12 +14,12 @@ class Fuel:
 
         for i in range(0, self.width, self.length + self.fuel_element_gap):
             if random.random() < self.occurence_probability:
-                fuel_element = FuelElement(length=self.length, water_bool=True,material=Material.FISSILE)
+                fuel_element = FuelElement(length=self.length, occurance_probability=self.occurence_probability, water_bool=True,material=Material.FISSILE)
                 fuel_element.body.position = (self.position[0], self.position[1] + i)
                 fuel_element.water_body.position = (self.position[0], self.position[1] + i)
                 self.fuel_elements.append(fuel_element)
             else:
-                fuel_element = FuelElement(length=self.length,water_bool=True,material=Material.NON_FISSILE)
+                fuel_element = FuelElement(length=self.length,occurance_probability=self.occurence_probability, water_bool=True,material=Material.NON_FISSILE)
                 fuel_element.body.position = (self.position[0], self.position[1] + i)
                 fuel_element.water_body.position = (self.position[0], self.position[1] + i)
                 self.fuel_elements.append(fuel_element)
@@ -28,7 +28,8 @@ class Fuel:
 
 class FuelElement:
     body_to_fuel_element = {}
-    def __init__(self, length, water_bool = True, material = Material.FISSILE):
+    def __init__(self, length, occurance_probability, water_bool = True, material = Material.FISSILE):
+        self.occurence_probability = occurance_probability
         self.material = material
         self.length = length
         self.radius = (length // 2) - 4
@@ -68,6 +69,11 @@ class FuelElement:
 
         return water_body, water_shape
 
+    def random_fissile_material(self):
+        if self.material == Material.NON_FISSILE:
+            if random.random() < 0.00001:
+                self.set_material(Material.FISSILE)
+
     def get_body(self):
         return self.body
 
@@ -89,8 +95,6 @@ class FuelElement:
             self.shape.collision_type = 3 if self.material == Material.FISSILE else 4
         except Exception as e:
             print(e)
-        else:
-            print("Material set successfully")
 
     def get_length(self):
         return self.length
@@ -103,5 +107,3 @@ class FuelElement:
             self.radius = radius
         except Exception as e:
             print(e)
-        else:
-            print("Radius set successfully")

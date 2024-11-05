@@ -21,8 +21,6 @@ class Core:
             self.neutron_list.append(neutron)
         except Exception as e:
             print(e)
-        else:
-            print("Object added to core successfully")
 
     def remove_neutron_from_core(self, neutron):
         try:
@@ -30,8 +28,6 @@ class Core:
             self.neutron_list.remove(neutron)
         except Exception as e:
             print(e)
-        else:
-            print("Object removed from core successfully")
 
     def add_moderator_to_core(self, moderator):
         try:
@@ -39,8 +35,6 @@ class Core:
             self.moderator_list.append(moderator)
         except Exception as e:
             print(e)
-        else:
-            print("Object added to core successfully")
 
     def remove_moderator_from_core(self, moderator):
         try:
@@ -48,8 +42,6 @@ class Core:
             self.moderator_list.remove(moderator)
         except Exception as e:
             print(e)
-        else:
-            print("Object removed from core successfully")
 
     def add_control_rod_to_core(self, control_rod):
         try:
@@ -57,8 +49,6 @@ class Core:
             self.control_rod_list.append(control_rod)
         except Exception as e:
             print(e)
-        else:
-            print("Object added to core successfully")
 
     def remove_control_rod_from_core(self, control_rod):
         try:
@@ -66,8 +56,6 @@ class Core:
             self.control_rod_list.remove(control_rod)
         except Exception as e:
             print(e)
-        else:
-            print("Object removed from core successfully")
 
     def add_fuel_rod_to_core(self, fuel_rod):
         try:
@@ -78,8 +66,6 @@ class Core:
 
         except Exception as e:
             print(e)
-        else:
-            print("Object added to core successfully")
 
     def remove_fuel_rod_from_core(self, fuel_rod):
         try:
@@ -89,8 +75,6 @@ class Core:
                 self.fuel_rod_list.remove(fuel_rod)
         except Exception as e:
             print(e)
-        else:
-            print("Object removed from core successfully")
 
     # Getters and setters
     def get_neutron_list(self):

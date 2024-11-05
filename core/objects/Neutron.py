@@ -43,8 +43,6 @@ class Neutron:
             self.moment_inertia = moment_inertia
         except Exception as e:
             print(e)
-        else:
-            print("Moment of inertia set successfully")
 
     def get_speed(self):
         return self.speed
@@ -56,8 +54,6 @@ class Neutron:
 
         except Exception as e:
             print(e)
-        else:
-            print("Speed set successfully")
 
     def get_position(self):
         if self.body:
@@ -71,8 +67,6 @@ class Neutron:
                 self.body.position = position
         except Exception as e:
             print(e)
-        else:
-            print("Position set successfully")
 
     def get_mass(self):
         return self.mass
@@ -84,8 +78,6 @@ class Neutron:
                 self.body.mass = mass
         except Exception as e:
             print(e)
-        else:
-            print("Mass set successfully")
 
     def get_radius(self):
         return self.radius
@@ -97,8 +89,6 @@ class Neutron:
                 self.shape.radius = radius
         except Exception as e:
             print(e)
-        else:
-            print("Radius set successfully")
 
     def get_body(self):
         return self.body
@@ -108,8 +98,6 @@ class Neutron:
             self.body = body
         except Exception as e:
             print(e)
-        else:
-            print("Body set successfully")
 
     def get_shape(self):
         return self.shape
@@ -119,5 +107,3 @@ class Neutron:
             self.shape = shape
         except Exception as e:
             print(e)
-        else:
-            print("Shape set successfully")

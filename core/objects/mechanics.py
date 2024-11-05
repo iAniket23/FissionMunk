@@ -45,7 +45,6 @@ class Mechanics:
         except Exception as e:
             print(e)
         else:
-            print("Moderator Collision detected")
             return True
 
     def neutron_control_rod_collision(self, arbiter, space, data):
@@ -59,7 +58,6 @@ class Mechanics:
         except Exception as e:
             print(e)
         else:
-            print("Control Rod Collision detected")
             return True
 
     def neutron_fuel_element_collision(self, arbiter, space, data):
@@ -97,17 +95,6 @@ class Mechanics:
                 new_speed_n1 = new_direction_n1 * fast_speed_magnitude
                 new_speed_n2 = new_direction_n2 * fast_speed_magnitude
 
-
-                # direction = neutron_velocity.normalized()
-                # fast_speed_magnitude = self.core.fast_speed.length
-                # new_speed = direction * fast_speed_magnitude
-
-                # x = new_speed.length * math.cos(self.angle_offset)
-                # y = new_speed.length * math.sin(self.angle_offset)
-
-                # new_speed_n1 = (x, y)
-                # new_speed_n2 = (x, -y)
-
                 neutron1 = Neutron(speed=new_speed_n1, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
                 neutron2 = Neutron(speed=new_speed_n2, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
 
@@ -118,7 +105,6 @@ class Mechanics:
         except Exception as e:
             print(e)
         else:
-            print("Fuel Element Collision detected")
             return True
 
     # Getters and Setters

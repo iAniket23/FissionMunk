@@ -35,8 +35,6 @@ class Moderator:
             self.body = body
         except Exception as e:
             print(e)
-        else:
-            print("Body set successfully")
 
     def get_shape(self):
         return self.shape
@@ -45,8 +43,6 @@ class Moderator:
             self.shape = shape
         except Exception as e:
             print(e)
-        else:
-            print("Shape set successfully")
 
     def get_length(self):
         return self.length
@@ -56,8 +52,6 @@ class Moderator:
             self.length = length
         except Exception as e:
             print(e)
-        else:
-            print("Length set successfully")
 
     def get_width(self):
         return self.width
@@ -67,8 +61,6 @@ class Moderator:
             self.width = width
         except Exception as e:
             print(e)
-        else:
-            print("Width set successfully")
 
     def get_position(self):
         return self.position
@@ -79,8 +71,6 @@ class Moderator:
                 self.body.position = position
         except Exception as e:
             print(e)
-        else:
-            print("Position set successfully")
 
     def get_material(self):
         return self.material
@@ -91,5 +81,3 @@ class Moderator:
             self.material = material
         except Exception as e:
             print(e)
-        else:
-            print("Material set successfully")

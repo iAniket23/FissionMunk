@@ -55,8 +55,6 @@ class ControlRod:
             self.body = body
         except Exception as e:
             print(e)
-        else:
-            print("Body set successfully")
 
     def get_shape(self):
         return self.shape
@@ -66,8 +64,6 @@ class ControlRod:
             self.shape = shape
         except Exception as e:
             print(e)
-        else:
-            print("Shape set successfully")
 
     def get_length(self):
         return self.length
@@ -77,8 +73,6 @@ class ControlRod:
             self.length = length
         except Exception as e:
             print(e)
-        else:
-            print("Length set successfully")
 
     def get_width(self):
         return self.width
@@ -88,5 +82,3 @@ class ControlRod:
             self.width = width
         except Exception as e:
             print(e)
-        else:
-            print("Width set successfully")

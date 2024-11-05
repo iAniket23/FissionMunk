@@ -31,7 +31,7 @@ for i in range(70, 1220, 120):
     core.add_control_rod_to_core(control_rod)
 
 for i in range(25, 1205, 30):
-    fuel_rod = Fuel(occurence_probability=0.3, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=True)
+    fuel_rod = Fuel(occurence_probability=0, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=True)
     core.add_fuel_rod_to_core(fuel_rod)
 
 # Create a mechanics object
@@ -61,6 +61,7 @@ def game():
                 else:
                     # dark grey for non-fissile material
                     pygame.draw.circle(display, (187, 187, 187), pos, int(fuel_element.get_radius()))
+                fuel_element.random_fissile_material()
         # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
         for neutron in core.get_neutron_list():
             pos = neutron.get_body().position
