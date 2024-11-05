@@ -7,6 +7,7 @@ from objects.ControlRod import ControlRod
 from objects.Fuel import Fuel
 from objects.Material import MaterialType as Material
 from objects.mechanics import Mechanics as Mechanics
+import random
 
 # Initialize Pygame
 pygame.init()
@@ -32,7 +33,7 @@ for i in range(70, 1220, 120):
     core.add_control_rod_to_core(control_rod)
 
 for i in range(25, 1205, 30):
-    fuel_rod = Fuel(occurence_probability=0.1, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=True)
+    fuel_rod = Fuel(occurence_probability=0.1, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=False)
     core.add_fuel_rod_to_core(fuel_rod)
 
 # Create a mechanics object
@@ -48,10 +49,11 @@ def game():
 
         for fuel_rod in core.get_fuel_rod_list():
             for fuel_element in fuel_rod.get_fuel_elements():
-                pos = fuel_element.get_water_body().position
-                pos = int(pos.x), int(pos.y)
-                # light blue for water
-                pygame.draw.rect(display, (225, 235, 245), (pos[0] - fuel_element.length // 2, pos[1] - fuel_element.length // 2, fuel_element.length, fuel_element.length))
+                if fuel_rod.water_bool:
+                    pos = fuel_element.get_water_body().position
+                    pos = int(pos.x), int(pos.y)
+                    # light blue for water
+                    pygame.draw.rect(display, (225, 235, 245), (pos[0] - fuel_element.length // 2, pos[1] - fuel_element.length // 2, fuel_element.length, fuel_element.length))
 
                 pos = fuel_element.get_body().position
                 pos = int(pos.x), int(pos.y)
