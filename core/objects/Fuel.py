@@ -45,6 +45,8 @@ class FuelElement:
             self.shape.collision_type = 3
         elif self.material == Material.NON_FISSILE:
             self.shape.collision_type = 4
+        elif self.material == Material.XENON:
+            self.shape.collision_type = 8
 
         FuelElement.body_to_fuel_element[(self.body, self.shape)] = self
 
@@ -61,6 +63,12 @@ class FuelElement:
         fuel_shape.sensor = True
         return fuel_body, fuel_shape
 
+    def create_xenon_fuel_element(self):
+        fuel_body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        fuel_shape = pymunk.Circle(fuel_body, self.radius)
+        fuel_shape.sensor = True
+        return fuel_body, fuel_shape
+
     def create_water(self):
         water_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         water_shape = pymunk.Poly.create_box(water_body, (self.length, self.length))
@@ -71,8 +79,17 @@ class FuelElement:
 
     def random_fissile_material(self):
         if self.material == Material.NON_FISSILE:
-            if random.random() < 0.00001:
+            prob = random.random()
+            if prob < 0.000005:
+                self.set_material(Material.XENON)
+            elif prob < 0.00001:
                 self.set_material(Material.FISSILE)
+        elif self.material == Material.XENON:
+            prob = random.random()
+            if prob < 0.0001:
+                self.set_material(Material.NON_FISSILE)
+                print("Xenon to non fissile")
+
 
     def get_body(self):
         return self.body
@@ -92,7 +109,13 @@ class FuelElement:
     def set_material(self, material):
         try:
             self.material = material
-            self.shape.collision_type = 3 if self.material == Material.FISSILE else 4
+            if self.material == Material.FISSILE:
+                self.shape.collision_type = 3
+            elif self.material == Material.NON_FISSILE:
+                self.shape.collision_type = 4
+            elif self.material == Material.XENON:
+                self.shape.collision_type = 8
+
         except Exception as e:
             print(e)
 

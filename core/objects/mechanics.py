@@ -21,6 +21,10 @@ class Mechanics:
         NFEC_handler = self.space.add_collision_handler(1, 3)
         NFEC_handler.begin = self.neutron_fuel_element_collision
 
+        # Xenon collision handler
+        NX_handler = self.space.add_collision_handler(1, 8)
+        NX_handler.begin = self.neutron_xenon_collision
+
     def neutron_moderator_collision(self, arbiter, space, data):
         try:
             neutron_shape, moderator_shape = arbiter.shapes
@@ -106,6 +110,22 @@ class Mechanics:
             print(e)
         else:
             return True
+
+    def neutron_xenon_collision(self, arbiter, space, data):
+        try:
+            neutron_shape, xenon_shape = arbiter.shapes
+            current_velocity = neutron_shape.body.velocity
+
+            if abs(current_velocity.length - self.core.thermal_speed.length) < 0.5:
+                neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
+                xenon = FuelElement.body_to_fuel_element[(xenon_shape.body, xenon_shape)]
+                self.core.remove_neutron_from_core(neutron)
+                xenon.set_material(Material.NON_FISSILE)
+        except Exception as e:
+            print(e)
+        else:
+            return True
+
 
     # Getters and Setters
     def get_space(self):

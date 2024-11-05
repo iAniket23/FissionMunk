@@ -18,8 +18,9 @@ FPS = 30
 core = Core(thermal_factor=2, cold_factor=1, fast_factor=5)
 
 # Create a neutron object
-neutron = Neutron(speed=core.get_thermal_speed(), position=(300, 110), mass=0.1, radius=5)
-core.add_neutron_to_core(neutron)
+for i in range(10):
+    neutron = Neutron(speed=core.get_fast_speed(), position=(300 + (i*50), 110 + (i*50)), mass=0.1, radius=5)
+    core.add_neutron_to_core(neutron)
 
 # Add Moderator to the core
 for i in range(10, 1220, 120):
@@ -31,7 +32,7 @@ for i in range(70, 1220, 120):
     core.add_control_rod_to_core(control_rod)
 
 for i in range(25, 1205, 30):
-    fuel_rod = Fuel(occurence_probability=0, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=True)
+    fuel_rod = Fuel(occurence_probability=0.1, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=True)
     core.add_fuel_rod_to_core(fuel_rod)
 
 # Create a mechanics object
@@ -58,9 +59,13 @@ def game():
                     # blue for fissile material
                     pygame.draw.circle(display,(48, 121, 203), pos, int(fuel_element.get_radius()))
 
-                else:
+                elif fuel_element.get_material() == Material.NON_FISSILE:
                     # dark grey for non-fissile material
                     pygame.draw.circle(display, (187, 187, 187), pos, int(fuel_element.get_radius()))
+
+                elif fuel_element.get_material() == Material.XENON:
+                    # black for xenon
+                    pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
                 fuel_element.random_fissile_material()
         # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
         for neutron in core.get_neutron_list():
