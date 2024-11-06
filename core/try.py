@@ -16,12 +16,12 @@ clock = pygame.time.Clock()
 FPS = 30
 
 # Create a core object
-core = Core(thermal_factor=2, cold_factor=1, fast_factor=5)
+core = Core(thermal_factor=4, cold_factor=1, fast_factor=8)
 
 # Create a neutron object
-for i in range(10):
-    neutron = Neutron(speed=core.get_fast_speed(), position=(300 + (i*50), 110 + (i*50)), mass=0.1, radius=5)
-    core.add_neutron_to_core(neutron)
+# for i in range(10):
+#     neutron = Neutron(speed=core.get_fast_speed(), position=(300 + (i*50), 110 + (i*50)), mass=0.1, radius=5)
+#     core.add_neutron_to_core(neutron)
 
 # Add Moderator to the core
 for i in range(10, 1220, 120):
@@ -37,7 +37,7 @@ for i in range(25, 1205, 30):
     core.add_fuel_rod_to_core(fuel_rod)
 
 # Create a mechanics object
-Mechanics(core)
+m = Mechanics(core)
 
 def game():
     while True:
@@ -69,6 +69,7 @@ def game():
                     # black for xenon
                     pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
                 fuel_element.random_fissile_material()
+
         # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
         for neutron in core.get_neutron_list():
             pos = neutron.get_body().position
@@ -84,9 +85,9 @@ def game():
         keys = pygame.key.get_pressed()
         movement = 0
         if keys[pygame.K_UP]:
-            movement = -10
+            movement = -5
         elif keys[pygame.K_DOWN]:
-            movement = 10
+            movement = 5
 
         for moderator in core.get_moderator_list():
             pos = moderator.get_body().position
@@ -102,7 +103,7 @@ def game():
 
         pygame.display.update()
         clock.tick(FPS)
-
+        m.generate_random_neutron()
         # Step the physics simulation
         core.get_space().step(1 / FPS)
 

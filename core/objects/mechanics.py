@@ -57,7 +57,7 @@ class Mechanics:
             neutron_shape, control_rod_shape = arbiter.shapes
 
             neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
-
+            neutron.remove_neutron()
             self.core.remove_neutron_from_core(neutron)
 
         except Exception as e:
@@ -111,7 +111,9 @@ class Mechanics:
                 self.core.add_neutron_to_core(neutron1)
                 self.core.add_neutron_to_core(neutron2)
 
+                neutron.remove_neutron()
                 self.core.remove_neutron_from_core(neutron)
+            return True
         except Exception as e:
             print(e)
         else:
@@ -125,13 +127,30 @@ class Mechanics:
             if abs(current_velocity.length - self.core.thermal_speed.length) < 0.5:
                 neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
                 xenon = FuelElement.body_to_fuel_element[(xenon_shape.body, xenon_shape)]
+                neutron.remove_neutron()
                 self.core.remove_neutron_from_core(neutron)
                 xenon.set_material(Material.NON_FISSILE)
         except Exception as e:
             print(e)
         else:
             return True
-
+    def generate_random_neutron(self):
+        try:
+            prob = random.random()
+            if prob < 0.1:
+                neutron_speed = self.core.thermal_speed
+                random_angle = random.uniform(0, 2 * math.pi)
+                x = math.cos(random_angle)
+                y = math.sin(random_angle)
+                new_direction = pymunk.Vec2d(x, y)
+                neutron_speed = new_direction * neutron_speed.length
+                neutron_position = (random.uniform(0, 800), random.uniform(0, 600))
+                neutron = Neutron(speed=neutron_speed, position=neutron_position, mass=0.1, radius=5)
+                self.core.add_neutron_to_core(neutron)
+        except Exception as e:
+            print(e)
+        else:
+            return True
 
     # Getters and Setters
     def get_space(self):

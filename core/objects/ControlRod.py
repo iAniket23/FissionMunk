@@ -26,8 +26,8 @@ class ControlRod:
         x, y = self.body.position
         if y + amount < -290:
             self.body.position = x, -290
-        elif y + amount > 300:
-            self.body.position = x, 300
+        elif y + amount > 280:
+            self.body.position = x, 280
         else:
             self.body.position = x, y + amount
 
