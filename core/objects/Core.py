@@ -1,20 +1,41 @@
 # Core class
-from .Neutron import Neutron
 import pymunk
 
 class Core:
-    def __init__(self, neutron_speed = (40, 0), thermal_factor = 50, cold_factor = 10, fast_factor = 100):
+    def __init__(self, length, width, neutron_speed = (40, 0), thermal_factor = 50, cold_factor = 10, fast_factor = 100):
+        # Core dimensions
+        self.length = length
+        self.width = width
+
+        # Neutron speed
         self.fast_speed = pymunk.Vec2d(neutron_speed[0], neutron_speed[1]) * fast_factor
         self.thermal_speed = pymunk.Vec2d(neutron_speed[0], neutron_speed[1]) * thermal_factor
         self.cold_speed = pymunk.Vec2d(neutron_speed[0], neutron_speed[1]) * cold_factor
 
+        # Space
         self.space = pymunk.Space()
 
+        # Lists of objects in the core
         self.neutron_list = []
         self.moderator_list = []
         self.control_rod_list = []
         self.fuel_rod_list = []
 
+        # Create core boundaries
+        self.create_core_boundaries()
+
+    # Create core boundaries
+    def create_core_boundaries(self):
+        # Create the core boundaries
+        core_boundaries = [pymunk.Segment(self.space.static_body, (0, 0), (0, self.width), 1),
+                           pymunk.Segment(self.space.static_body, (0, self.width), (self.length, self.width), 1),
+                           pymunk.Segment(self.space.static_body, (self.length, self.width), (self.length, 0), 1),
+                           pymunk.Segment(self.space.static_body, (self.length, 0), (0, 0), 1)]
+        for boundary in core_boundaries:
+            boundary.collision_type = 10
+            self.space.add(boundary)
+
+    # Add and remove neutron from the core
     def add_neutron_to_core(self, neutron):
         try:
             self.space.add(neutron.get_body(), neutron.get_shape())
@@ -29,6 +50,7 @@ class Core:
         except Exception as e:
             print(e)
 
+    # Add and remove moderator from the core
     def add_moderator_to_core(self, moderator):
         try:
             self.space.add(moderator.get_body(), moderator.get_shape())
@@ -43,6 +65,7 @@ class Core:
         except Exception as e:
             print(e)
 
+    # Add and remove control rod from the core
     def add_control_rod_to_core(self, control_rod):
         try:
             self.space.add(control_rod.get_body(), control_rod.get_shape())
@@ -57,11 +80,11 @@ class Core:
         except Exception as e:
             print(e)
 
+    # Add and remove fuel rod from the core
     def add_fuel_rod_to_core(self, fuel_rod):
         try:
             for fuel_element in fuel_rod.get_fuel_elements():
                 self.space.add(fuel_element.get_body(), fuel_element.get_shape())
-                self.space.add(fuel_element.get_water_body(), fuel_element.get_water_shape())
                 self.fuel_rod_list.append(fuel_rod)
 
         except Exception as e:
@@ -71,7 +94,6 @@ class Core:
         try:
             for fuel_element in fuel_rod.get_fuel_elements():
                 self.space.remove(fuel_element.get_body(), fuel_element.get_shape())
-                self.space.remove(fuel_element.get_water_body(), fuel_element.get_water_shape())
                 self.fuel_rod_list.remove(fuel_rod)
         except Exception as e:
             print(e)
@@ -89,9 +111,9 @@ class Core:
     def get_fuel_rod_list(self):
         return self.fuel_rod_list
 
-
     def get_space(self):
         return self.space
+
     def set_fast_speed(self, speed):
         self.fast_speed = speed
 

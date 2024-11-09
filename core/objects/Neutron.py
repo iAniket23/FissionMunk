@@ -1,9 +1,9 @@
 # Neutron class
 import pymunk
-import random
-import pygame
 
-pygame.mixer.init()
+# import pygame
+# pygame.mixer.init()
+
 class Neutron:
     body_to_neutron = {}
 
@@ -14,23 +14,19 @@ class Neutron:
         self.mass = mass
         self.radius = radius
 
-        self.moment_inertia = self.initialize_moment_inertia()
-
         self.body, self.shape = self.create_neutron()
 
         self.shape.collision_type = 1
-
         self.shape.sensor = True
 
-        self.geiger_tick_sound = pygame.mixer.Sound("geiger_tick.mp3")
-        self.geiger_tick_sound.play()  # Play the sound
-
+        # self.geiger_tick_sound = pygame.mixer.Sound("geiger_tick.mp3")
+        # self.geiger_tick_sound.play()  # Play the sound
 
         Neutron.body_to_neutron[(self.body, self.shape)] = self
 
     # Create a neutron object
     def create_neutron(self):
-        circle_body = pymunk.Body(self.mass, self.moment_inertia, pymunk.Body.DYNAMIC)
+        circle_body = pymunk.Body(self.mass, self.initialize_moment_inertia(), pymunk.Body.DYNAMIC)
         circle_shape = pymunk.Circle(circle_body, self.radius)
         circle_body.position = self.position
         circle_body.velocity = self.speed
@@ -49,16 +45,6 @@ class Neutron:
         circle_moment_inertia = pymunk.moment_for_circle(self.mass, 0, self.radius)
         return circle_moment_inertia
 
-    # Getters and Setters
-    def get_moment_inertia(self):
-        return self.moment_inertia
-
-    def set_moment_inertia(self, moment_inertia):
-        try:
-            self.moment_inertia = moment_inertia
-        except Exception as e:
-            print(e)
-
     def get_speed(self):
         return self.speed
 
@@ -71,54 +57,22 @@ class Neutron:
             print(e)
 
     def get_position(self):
-        if self.body:
-            return self.body.position
-        return self.position
+        return self.body.position
 
     def set_position(self, position):
         try:
-            self.position = position
-            if self.body:
-                self.body.position = position
+            self.body.position = position
         except Exception as e:
             print(e)
 
     def get_mass(self):
         return self.mass
 
-    def set_mass(self, mass):
-        try:
-            self.mass = mass
-            if self.body:
-                self.body.mass = mass
-        except Exception as e:
-            print(e)
-
     def get_radius(self):
         return self.radius
-
-    def set_radius(self, radius):
-        try:
-            self.radius = radius
-            if self.shape:
-                self.shape.radius = radius
-        except Exception as e:
-            print(e)
 
     def get_body(self):
         return self.body
 
-    def set_body(self, body):
-        try:
-            self.body = body
-        except Exception as e:
-            print(e)
-
     def get_shape(self):
         return self.shape
-
-    def set_shape(self, shape):
-        try:
-            self.shape = shape
-        except Exception as e:
-            print(e)

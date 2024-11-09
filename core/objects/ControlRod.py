@@ -1,84 +1,66 @@
+# import the necessary packages
 import pymunk
 from .Material import MaterialType as Material
+
+# ControlRod class
 class ControlRod:
-    def __init__(self, length, width, position, material=Material.BORON_CARBIDE):
+    def __init__(self, length, width, position, movement_range ,material=Material.BORON_CARBIDE):
+        # initialize the control rod
         self.length = length
         self.width = width
-        self.position = position
-        self.orginal_position = position
 
+        # add length // 2 to the y position to the movement range
+        self.movement_range = (movement_range[0] - (width//2), movement_range[1] - (width//2))
+
+        # set the material of the control rod
         assert material in Material, "Invalid material"
         self.material = material
 
-        self.body, self.shape = self.create_control_rod()
+        # create the control rod
+        self.body, self.shape= self.create_control_rod()
+        self.body.position = position
 
+        # set the collision type of the control rod
+        self.shape.collision_type = 5
 
+    # create the control rod
     def create_control_rod(self):
         # make the control rod move with keyboard input up and down
         control_rod_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
         control_rod_shape = pymunk.Poly.create_box(control_rod_body, (self.length, self.width))
-        control_rod_body.position = self.position
+
+        # set the sensor of the control rod, which is used to detect collision
         control_rod_shape.sensor = True
-        control_rod_shape.collision_type = 5
         return control_rod_body, control_rod_shape
 
+    # move the control rod
     def move_control_rod(self, amount):
         x, y = self.body.position
-        if y + amount < -290:
-            self.body.position = x, -290
-        elif y + amount > 280:
-            self.body.position = x, 280
+        if y + amount < self.movement_range[0]:
+            self.body.position = x, self.movement_range[0]
+        elif y + amount > self.movement_range[1]:
+            self.body.position = x, self.movement_range[1]
         else:
             self.body.position = x, y + amount
 
-
-    def reset_position(self):
-        self.body.position = self.orginal_position
-
+    # Getters and Setters
     def get_position(self):
-        return self.position
+        return self.body.position
 
     def set_position(self, position):
         try:
-            self.position = position
-            self.orginal_position = position
-            if self.body:
-                self.body.position = position
+            self.body.position = position
         except Exception as e:
             print(e)
 
     def get_body(self):
         return self.body
 
-    def set_body(self, body):
-        try:
-            self.body = body
-        except Exception as e:
-            print(e)
-
     def get_shape(self):
         return self.shape
-
-    def set_shape(self, shape):
-        try:
-            self.shape = shape
-        except Exception as e:
-            print(e)
 
     def get_length(self):
         return self.length
 
-    def set_length(self, length):
-        try:
-            self.length = length
-        except Exception as e:
-            print(e)
-
     def get_width(self):
         return self.width
-
-    def set_width(self, width):
-        try:
-            self.width = width
-        except Exception as e:
-            print(e)

@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 FPS = 30
 
 # Create a core object
-core = Core(thermal_factor=4, cold_factor=1, fast_factor=8)
+core = Core(length=1220, width=600,thermal_factor=4, cold_factor=1, fast_factor=8)
 
 # Add Moderator to the core
 for i in range(10, 1220, 120):
@@ -24,12 +24,8 @@ for i in range(10, 1220, 120):
     core.add_moderator_to_core(moderator)
 
 for i in range(70, 1220, 120):
-    control_rod = ControlRod(length=10, width=600, position=(i, -290), material=Material.BORON_CARBIDE)
+    control_rod = ControlRod(length=10, width=600, position=(i, 0), movement_range=[20, 580],material=Material.BORON_CARBIDE)
     core.add_control_rod_to_core(control_rod)
-
-for i in range(70, 1220, 120):
-    control_rod = Moderator(length=10, width=600, position=(i, -290), material=Material.GRAPHITE)
-    core.add_moderator_to_core(control_rod)
 
 for i in range(25, 1205, 30):
     fuel_rod = Fuel(occurence_probability=0.03, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=False)
@@ -83,18 +79,12 @@ def game():
 
         keys = pygame.key.get_pressed()
         movement = 0
-        movement2 = 0
         if keys[pygame.K_UP]:
             movement = -5
         elif keys[pygame.K_DOWN]:
             movement = 5
-        elif keys[pygame.K_RIGHT]:
-            movement2 = 5
-        elif keys[pygame.K_LEFT]:
-            movement2 = -5
 
         for moderator in core.get_moderator_list():
-            moderator.move_control_rod(movement2)
             pos = moderator.get_body().position
             pos = int(pos.x), int(pos.y)
             pygame.draw.rect(display, (0, 0, 0), (pos[0] - moderator.get_length() // 2, pos[1] - moderator.width // 2, moderator.get_length(), moderator.width), 1)
@@ -111,6 +101,8 @@ def game():
         m.generate_random_neutron()
         # Step the physics simulation
         core.get_space().step(1 / FPS)
+
+        print(len(core.get_neutron_list()))
 
 game()
 pygame.quit()

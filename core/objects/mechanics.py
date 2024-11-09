@@ -26,6 +26,23 @@ class Mechanics:
         NX_handler = self.space.add_collision_handler(1, 8)
         NX_handler.begin = self.neutron_xenon_collision
 
+        # Boundary collision handler
+        NB_handler = self.space.add_collision_handler(1, 10)
+        NB_handler.begin = self.neutron_boundary_collision
+        NB_handler.separate = self.neutron_boundary_collision
+
+    def neutron_boundary_collision(self, arbiter, space, data):
+        try:
+            neutron_shape, boundary_shape = arbiter.shapes
+            neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
+            neutron.remove_neutron()
+            self.core.remove_neutron_from_core(neutron)
+
+        except Exception as e:
+            print(e)
+        else:
+            return True
+
     def neutron_moderator_collision(self, arbiter, space, data):
         try:
             neutron_shape, moderator_shape = arbiter.shapes
