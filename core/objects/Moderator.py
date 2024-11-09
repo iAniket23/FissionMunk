@@ -27,6 +27,15 @@ class Moderator:
     def create_water_moderator(self):
         pass
 
+    def move_control_rod(self, amount):
+        x, y = self.body.position
+        if y + amount < -290:
+            self.body.position = x, -290
+        elif y + amount > 280:
+            self.body.position = x, 280
+        else:
+            self.body.position = x, y + amount
+    
     # Getters and Setters
     def get_body(self):
         return self.body
