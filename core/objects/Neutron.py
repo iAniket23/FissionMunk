@@ -34,7 +34,8 @@ class Neutron:
         try:
             self.body_to_neutron.pop((self.body, self.shape))
         except Exception as e:
-            print(e)
+            # print(e)
+            pass
         else:
             return True
 
@@ -50,16 +51,14 @@ class Neutron:
             self.body.velocity = speed
 
         except Exception as e:
-            print(e)
+            # print(e)
+            pass
 
     def get_position(self):
         return self.body.position
 
     def set_position(self, position):
-        try:
-            self.body.position = position
-        except Exception as e:
-            print(e)
+        self.body.position = position
 
     def get_mass(self):
         return self.mass

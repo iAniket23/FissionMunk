@@ -50,7 +50,7 @@ class FuelElement:
 
     def change_material(self):
         # get probability
-        prob = get_probability((0, 1000))
+        prob = get_probability()
 
         if self.material == Material.NON_FISSILE:
             if prob < self.xenon_occurance_probability:
@@ -72,17 +72,13 @@ class FuelElement:
         return self.material
 
     def set_material(self, material):
-        try:
-            self.material = material
-            if self.material == Material.FISSILE:
-                self.shape.collision_type = 3
-            elif self.material == Material.NON_FISSILE:
-                self.shape.collision_type = 4
-            elif self.material == Material.XENON:
-                self.shape.collision_type = 8
-
-        except Exception as e:
-            print(e)
+        self.material = material
+        if self.material == Material.FISSILE:
+            self.shape.collision_type = 3
+        elif self.material == Material.NON_FISSILE:
+            self.shape.collision_type = 4
+        elif self.material == Material.XENON:
+            self.shape.collision_type = 8
 
     def get_radius(self):
         return self.radius

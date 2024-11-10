@@ -48,10 +48,7 @@ class ControlRod:
         return self.body.position
 
     def set_position(self, position):
-        try:
-            self.body.position = position
-        except Exception as e:
-            print(e)
+        self.body.position = position
 
     def get_body(self):
         return self.body

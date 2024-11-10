@@ -5,6 +5,8 @@ from objects.Neutron import Neutron
 from objects.Fuel import FuelElement
 from .Material import MaterialType as Material
 from .helper import get_probability
+
+# Mechanics class
 class Mechanics:
     def __init__(self, core = None):
         self.core = core
@@ -38,11 +40,11 @@ class Mechanics:
             neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
             neutron.remove_neutron()
             self.core.remove_neutron_from_core(neutron)
+            return True
 
         except Exception as e:
-            print(e)
-        else:
-            return True
+            # print(e)
+            return False
 
     def neutron_moderator_collision(self, arbiter, space, data):
         try:
@@ -65,10 +67,10 @@ class Mechanics:
 
                 # Apply the new velocity to the neutron
                 neutron_shape.body.velocity = new_velocity
-        except Exception as e:
-            print(e)
-        else:
             return True
+        except Exception as e:
+            # print(e)
+            return False
 
     def neutron_control_rod_collision(self, arbiter, space, data):
         try:
@@ -78,10 +80,11 @@ class Mechanics:
             neutron.remove_neutron()
             self.core.remove_neutron_from_core(neutron)
 
-        except Exception as e:
-            print(e)
-        else:
             return True
+
+        except Exception as e:
+            # print(e)
+            return False
 
     def neutron_fuel_element_collision(self, arbiter, space, data):
         try:
@@ -131,11 +134,12 @@ class Mechanics:
 
                 neutron.remove_neutron()
                 self.core.remove_neutron_from_core(neutron)
+
             return True
+
         except Exception as e:
-            print(e)
-        else:
-            return True
+            # print(e)
+            return False
 
     def neutron_xenon_collision(self, arbiter, space, data):
         try:
@@ -148,15 +152,15 @@ class Mechanics:
                 neutron.remove_neutron()
                 self.core.remove_neutron_from_core(neutron)
                 xenon.set_material(Material.NON_FISSILE)
-        except Exception as e:
-            print(e)
-        else:
-            return True
 
-    def generate_random_neutron(self):
+            return True
+        except Exception as e:
+            return False
+
+    def generate_random_neutron(self, limit):
         try:
             prob = get_probability()
-            if prob < 0.1:
+            if prob < limit:
                 neutron_speed = self.core.thermal_speed
                 random_angle = random.uniform(0, 2 * math.pi)
                 x = math.cos(random_angle)
@@ -166,7 +170,7 @@ class Mechanics:
                 neutron_position = (random.uniform(0, self.core.length), random.uniform(0, self.core.width))
                 neutron = Neutron(speed=neutron_speed, position=neutron_position, mass=0.1, radius=5)
                 self.core.add_neutron_to_core(neutron)
-        except Exception as e:
-            print(e)
-        else:
             return True
+        except Exception as e:
+            # print(e)
+            return False

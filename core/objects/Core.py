@@ -37,66 +37,43 @@ class Core:
 
     # Add and remove neutron from the core
     def add_neutron_to_core(self, neutron):
-        try:
-            self.space.add(neutron.get_body(), neutron.get_shape())
-            self.neutron_list.append(neutron)
-        except Exception as e:
-            print(e)
+        self.space.add(neutron.get_body(), neutron.get_shape())
+        self.neutron_list.append(neutron)
 
     def remove_neutron_from_core(self, neutron):
-        try:
-            self.space.remove(neutron.get_body(), neutron.get_shape())
-            self.neutron_list.remove(neutron)
-        except Exception as e:
-            print(e)
+        self.space.remove(neutron.get_body(), neutron.get_shape())
+        self.neutron_list.remove(neutron)
 
     # Add and remove moderator from the core
     def add_moderator_to_core(self, moderator):
-        try:
-            self.space.add(moderator.get_body(), moderator.get_shape())
-            self.moderator_list.append(moderator)
-        except Exception as e:
-            print(e)
+        self.space.add(moderator.get_body(), moderator.get_shape())
+        self.moderator_list.append(moderator)
+
 
     def remove_moderator_from_core(self, moderator):
-        try:
-            self.space.remove(moderator.get_body(), moderator.get_shape())
-            self.moderator_list.remove(moderator)
-        except Exception as e:
-            print(e)
+        self.space.remove(moderator.get_body(), moderator.get_shape())
+        self.moderator_list.remove(moderator)
 
     # Add and remove control rod from the core
     def add_control_rod_to_core(self, control_rod):
-        try:
-            self.space.add(control_rod.get_body(), control_rod.get_shape())
-            self.control_rod_list.append(control_rod)
-        except Exception as e:
-            print(e)
+        self.space.add(control_rod.get_body(), control_rod.get_shape())
+        self.control_rod_list.append(control_rod)
+
 
     def remove_control_rod_from_core(self, control_rod):
-        try:
-            self.space.remove(control_rod.get_body(), control_rod.get_shape())
-            self.control_rod_list.remove(control_rod)
-        except Exception as e:
-            print(e)
+        self.space.remove(control_rod.get_body(), control_rod.get_shape())
+        self.control_rod_list.remove(control_rod)
 
     # Add and remove fuel rod from the core
     def add_fuel_rod_to_core(self, fuel_rod):
-        try:
-            for fuel_element in fuel_rod.get_fuel_elements():
-                self.space.add(fuel_element.get_body(), fuel_element.get_shape())
-                self.fuel_rod_list.append(fuel_rod)
-
-        except Exception as e:
-            print(e)
+        for fuel_element in fuel_rod.get_fuel_elements():
+            self.space.add(fuel_element.get_body(), fuel_element.get_shape())
+            self.fuel_rod_list.append(fuel_rod)
 
     def remove_fuel_rod_from_core(self, fuel_rod):
-        try:
-            for fuel_element in fuel_rod.get_fuel_elements():
-                self.space.remove(fuel_element.get_body(), fuel_element.get_shape())
-                self.fuel_rod_list.remove(fuel_rod)
-        except Exception as e:
-            print(e)
+        for fuel_element in fuel_rod.get_fuel_elements():
+            self.space.remove(fuel_element.get_body(), fuel_element.get_shape())
+            self.fuel_rod_list.remove(fuel_rod)
 
     # Getters and setters
     def get_neutron_list(self):
