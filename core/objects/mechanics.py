@@ -1,9 +1,10 @@
 import math
-import pymunk
 import random
+import pymunk
 from objects.Neutron import Neutron
 from objects.Fuel import FuelElement
 from .Material import MaterialType as Material
+from .helper import get_probability
 class Mechanics:
     def __init__(self, core = None):
         self.core = core
@@ -120,7 +121,7 @@ class Mechanics:
                 neutron1 = Neutron(speed=new_speed_n1, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
                 neutron2 = Neutron(speed=new_speed_n2, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
 
-                if random.random() < 0.3:
+                if get_probability() < 0.5:
                     new_speed_n3 = -direction * fast_speed_magnitude
                     neutron3 = Neutron(speed=new_speed_n3, position=neutron.get_position(), mass=neutron.get_mass(), radius=neutron.get_radius())
                     self.core.add_neutron_to_core(neutron3)
@@ -151,9 +152,10 @@ class Mechanics:
             print(e)
         else:
             return True
+
     def generate_random_neutron(self):
         try:
-            prob = random.random()
+            prob = get_probability()
             if prob < 0.1:
                 neutron_speed = self.core.thermal_speed
                 random_angle = random.uniform(0, 2 * math.pi)
@@ -161,34 +163,10 @@ class Mechanics:
                 y = math.sin(random_angle)
                 new_direction = pymunk.Vec2d(x, y)
                 neutron_speed = new_direction * neutron_speed.length
-                neutron_position = (random.uniform(0, 800), random.uniform(0, 600))
+                neutron_position = (random.uniform(0, self.core.length), random.uniform(0, self.core.width))
                 neutron = Neutron(speed=neutron_speed, position=neutron_position, mass=0.1, radius=5)
                 self.core.add_neutron_to_core(neutron)
         except Exception as e:
             print(e)
         else:
             return True
-
-    # Getters and Setters
-    def get_space(self):
-        return self.space
-
-    def set_space(self, space):
-        try:
-            self.space = space
-        except Exception as e:
-            print(e)
-        else:
-            print("Space set successfully")
-
-    def get_core(self):
-        return self.core
-
-    def set_core(self, core):
-        try:
-            self.core = core
-            self.space = core.get_space()
-        except Exception as e:
-            print(e)
-        else:
-            print("Core set successfully")

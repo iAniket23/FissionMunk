@@ -7,7 +7,6 @@ from objects.ControlRod import ControlRod
 from objects.Fuel import Fuel
 from objects.Material import MaterialType as Material
 from objects.mechanics import Mechanics as Mechanics
-import random
 
 # Initialize Pygame
 pygame.init()
@@ -27,9 +26,9 @@ for i in range(70, 1220, 120):
     control_rod = ControlRod(length=10, width=600, position=(i, 0), movement_range=[20, 580],material=Material.BORON_CARBIDE)
     core.add_control_rod_to_core(control_rod)
 
-for i in range(25, 1205, 30):
-    fuel_rod = Fuel(occurence_probability=0.03, fuel_element_gap=5, length=25, width=560, position=(i, 25), water_bool=False)
-    core.add_fuel_rod_to_core(fuel_rod)
+# for i in range(25, 1205, 30):
+#     fuel_rod = Fuel(uranium_occurance_probability=0.6, xenon_occurance_probability=0.1, xenon_decay_probability=0.1, element_radius=5, width=560, position=(i, 25))
+#     core.add_fuel_rod_to_core(fuel_rod)
 
 # Create a mechanics object
 m = Mechanics(core)
@@ -42,28 +41,22 @@ def game():
 
         display.fill((255, 255, 255))
 
-        for fuel_rod in core.get_fuel_rod_list():
-            for fuel_element in fuel_rod.get_fuel_elements():
-                if fuel_rod.water_bool:
-                    pos = fuel_element.get_water_body().position
-                    pos = int(pos.x), int(pos.y)
-                    # light blue for water
-                    pygame.draw.rect(display, (225, 235, 245), (pos[0] - fuel_element.length // 2, pos[1] - fuel_element.length // 2, fuel_element.length, fuel_element.length))
+        # for fuel_rod in core.get_fuel_rod_list():
+        #     for fuel_element in fuel_rod.get_fuel_elements():
+        #         pos = fuel_element.get_body().position
+        #         pos = int(pos.x), int(pos.y)
+        #         if fuel_element.get_material() == Material.FISSILE:
+        #             # blue for fissile material
+        #             pygame.draw.circle(display,(48, 121, 203), pos, int(fuel_element.get_radius()))
 
-                pos = fuel_element.get_body().position
-                pos = int(pos.x), int(pos.y)
-                if fuel_element.get_material() == Material.FISSILE:
-                    # blue for fissile material
-                    pygame.draw.circle(display,(48, 121, 203), pos, int(fuel_element.get_radius()))
+        #         elif fuel_element.get_material() == Material.NON_FISSILE:
+        #             # dark grey for non-fissile material
+        #             pygame.draw.circle(display, (187, 187, 187), pos, int(fuel_element.get_radius()))
 
-                elif fuel_element.get_material() == Material.NON_FISSILE:
-                    # dark grey for non-fissile material
-                    pygame.draw.circle(display, (187, 187, 187), pos, int(fuel_element.get_radius()))
-
-                elif fuel_element.get_material() == Material.XENON:
-                    # black for xenon
-                    pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
-                fuel_element.random_fissile_material()
+        #         elif fuel_element.get_material() == Material.XENON:
+        #             # black for xenon
+        #             pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
+        #         fuel_element.random_fissile_material()
 
         # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
         for neutron in core.get_neutron_list():

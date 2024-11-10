@@ -9,12 +9,12 @@ class Neutron:
 
     # Constructor
     def __init__(self, speed, position, mass=0.1, radius=1):
-        self.speed = speed
-        self.position = position
         self.mass = mass
         self.radius = radius
 
         self.body, self.shape = self.create_neutron()
+        self.body.position = position
+        self.body.velocity = speed
 
         self.shape.collision_type = 1
         self.shape.sensor = True
@@ -28,9 +28,6 @@ class Neutron:
     def create_neutron(self):
         circle_body = pymunk.Body(self.mass, self.initialize_moment_inertia(), pymunk.Body.DYNAMIC)
         circle_shape = pymunk.Circle(circle_body, self.radius)
-        circle_body.position = self.position
-        circle_body.velocity = self.speed
-
         return circle_body, circle_shape
 
     def remove_neutron(self):
@@ -46,12 +43,11 @@ class Neutron:
         return circle_moment_inertia
 
     def get_speed(self):
-        return self.speed
+        return self.body.velocity
 
     def set_speed(self, speed):
         try:
-            self.speed = speed
-            self.body.velocity = self.speed
+            self.body.velocity = speed
 
         except Exception as e:
             print(e)

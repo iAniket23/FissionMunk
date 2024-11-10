@@ -20,7 +20,6 @@ class Moderator:
     def create_moderator(self):
         rect_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         rect_shape = pymunk.Poly.create_box(rect_body, (self.length, self.width))
-        rect_body.position = self.position
         return rect_body, rect_shape
 
     # Getters and Setters
