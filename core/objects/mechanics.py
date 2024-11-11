@@ -2,6 +2,7 @@ import math
 import random
 import pymunk
 from objects.Neutron import Neutron
+from objects.Water import Water
 from objects.Fuel import FuelElement
 from .Material import MaterialType as Material
 from .helper import get_probability
@@ -12,6 +13,7 @@ class Mechanics:
         self.core = core
         self.space = core.get_space()
         self.angle_offset = math.radians(30)
+        self.water_absorption = 0.05
 
         # Set the collision handler for neutron and moderator
         NMC_handler = self.space.add_collision_handler(1, 2)
@@ -33,6 +35,42 @@ class Mechanics:
         NB_handler = self.space.add_collision_handler(1, 10)
         NB_handler.begin = self.neutron_boundary_collision
         NB_handler.separate = self.neutron_boundary_collision
+
+        NW_handler = self.space.add_collision_handler(1, 11)
+        NW_handler.begin = self.neutron_water_collision_add
+        NW_handler.separate = self.neutron_water_collision_remove
+
+    def neutron_water_collision_add(self, arbiter, space, data):
+        try:
+            prob = get_probability()
+            neutron_shape, water_shape = arbiter.shapes
+            if prob < self.water_absorption:
+                neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
+                neutron.remove_neutron()
+                self.core.remove_neutron_from_core(neutron)
+
+            water = Water.body_to_water[(water_shape.body, water_shape)]
+            water.increase_number_of_neutrons_interacting()
+
+            water.change_temperature(20)
+
+            return True
+
+        except Exception as e:
+            return False
+
+    def neutron_water_collision_remove(self, arbiter, space, data):
+        try:
+            neutron_shape, water_shape = arbiter.shapes
+            water = Water.body_to_water[(water_shape.body, water_shape)]
+            water.decrease_number_of_neutrons_interacting()
+            return True
+        except Exception as e:
+            return False
+
+    def regulate_water_temperature(self):
+        for water in self.core.get_water_list():
+            water.change_temperature(-0.5)
 
     def neutron_boundary_collision(self, arbiter, space, data):
         try:

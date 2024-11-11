@@ -4,11 +4,13 @@ from .Material import MaterialType as Material
 
 # ControlRod class
 class ControlRod:
-    def __init__(self, length, width, position, movement_range ,material=Material.BORON_CARBIDE):
+    def __init__(self, length, width, position, movement_range ,tag="E",material=Material.BORON_CARBIDE):
         # initialize the control rod
         self.length = length
         self.width = width
-
+        self.tag = tag
+        self.reach_top = False
+        self.reach_bottom = False
         # add length // 2 to the y position to the movement range
         self.movement_range = (movement_range[0] - (width//2), movement_range[1] - (width//2))
 
@@ -38,10 +40,14 @@ class ControlRod:
         x, y = self.body.position
         if y + amount < self.movement_range[0]:
             self.body.position = x, self.movement_range[0]
+            self.reach_top = True
         elif y + amount > self.movement_range[1]:
             self.body.position = x, self.movement_range[1]
+            self.reach_bottom = True
         else:
             self.body.position = x, y + amount
+            self.reach_top = False
+            self.reach_bottom = False
 
     # Getters and Setters
     def get_position(self):
@@ -61,3 +67,10 @@ class ControlRod:
 
     def get_width(self):
         return self.width
+
+    def get_reach_top(self):
+        return self.reach_top
+
+    def get_reach_bottom(self):
+        return self.reach_bottom
+    
