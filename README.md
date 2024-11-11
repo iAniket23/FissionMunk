@@ -9,9 +9,9 @@
 
 - Website: 
 - Documentation:  
-- Source code: [https://github.com/iAniket23/fissionmunk](https://github.com/yourusername/fissionmunk)  
-- Contributing:   
-- Bug reports: [https://github.com/iAniket23/fissionmunk/issues](https://github.com/yourusername/fissionmunk/issues)  
+- Source code: [https://github.com/iAniket23/fissionmunk](https://github.com/iAniket23/fissionmunk)  
+- Contributing:
+- Bug reports: [https://github.com/iAniket23/fissionmunk/issues](https://github.com/iAniket23/fissionmunk/issues)  
 - Report a security vulnerability: 
 
 ## Installation
