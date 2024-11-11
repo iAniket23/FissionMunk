@@ -1,5 +1,4 @@
 # Slows down neutron speed and bring it to Fission speed
-
 import pymunk
 from .Material import MaterialType as Material
 

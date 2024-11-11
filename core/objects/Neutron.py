@@ -1,9 +1,6 @@
 # Neutron class
 import pymunk
 
-# import pygame
-# pygame.mixer.init()
-
 class Neutron:
     body_to_neutron = {}
 
@@ -18,9 +15,6 @@ class Neutron:
 
         self.shape.collision_type = 1
         self.shape.sensor = True
-
-        # self.geiger_tick_sound = pygame.mixer.Sound("geiger_tick.mp3")
-        # self.geiger_tick_sound.play()  # Play the sound
 
         Neutron.body_to_neutron[(self.body, self.shape)] = self
 
