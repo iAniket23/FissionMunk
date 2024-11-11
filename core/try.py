@@ -25,7 +25,6 @@ for i in range(10, 1220, 120):
 
 c = 0
 for i in range(70, 1220, 120):
-
     if c % 2 == 0:
         tag = "O"
     else:
@@ -33,6 +32,7 @@ for i in range(70, 1220, 120):
     control_rod = ControlRod(length=10, width=600, position=(i, 0), tag=tag, movement_range=[20, 580],material=Material.BORON_CARBIDE)
     core.add_control_rod_to_core(control_rod)
     c += 1
+
 for i in range(25, 1205, 30):
     fuel_rod = Fuel(fuel_element_gap=10,uranium_occurance_probability=0.0001, xenon_occurance_probability=0.00001, xenon_decay_probability=0.00001, element_radius=10, width=560, position=(i, 25))
     core.add_fuel_rod_to_core(fuel_rod)
@@ -101,7 +101,6 @@ def game():
                 elif fuel_element.get_material() == Material.XENON:
                     # black for xenon
                     pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
-                fuel_element.change_material()
 
         # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
         for neutron in core.get_neutron_list():
@@ -152,10 +151,10 @@ def game():
         pygame.display.update()
         clock.tick(FPS)
 
-        # Generate random neutron
+        # Run the physics simulation
         mechanics.generate_random_neutron(limit=0.08)
         mechanics.regulate_water_temperature()
-
+        mechanics.regulate_fuel_element_occurence()
 
         # Step the physics simulation
         core.get_space().step(1 / FPS)

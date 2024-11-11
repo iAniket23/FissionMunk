@@ -72,6 +72,11 @@ class Mechanics:
         for water in self.core.get_water_list():
             water.change_temperature(-0.5)
 
+    def regulate_fuel_element_occurence(self):
+        for fuel_rod in self.core.get_fuel_rod_list():
+            for fuel_element in fuel_rod.get_fuel_elements():
+                fuel_element.change_material()
+
     def neutron_boundary_collision(self, arbiter, space, data):
         try:
             neutron_shape, boundary_shape = arbiter.shapes
