@@ -18,8 +18,7 @@ class Core:
         # Lists of objects in the core
         self.neutron_list = []
         self.moderator_list = []
-        self.control_rod_list_E = []
-        self.control_rod_list_O = []
+        self.control_rod_list = []
         self.fuel_rod_list = []
         self.water_list = []
 
@@ -66,14 +65,8 @@ class Core:
 
     # Add and remove control rod from the core
     def add_control_rod_to_core(self, control_rod):
-        if control_rod.tag == "E":
-            self.space.add(control_rod.get_body(), control_rod.get_shape())
-            self.control_rod_list_E.append(control_rod)
-        else:
-            self.space.add(control_rod.get_body(), control_rod.get_shape())
-            self.control_rod_list_O.append(control_rod)
-        # self.space.add(control_rod.get_body(), control_rod.get_shape())
-        # self.control_rod_list.append(control_rod)
+        self.space.add(control_rod.get_body(), control_rod.get_shape())
+        self.control_rod_list.append(control_rod)
 
 
     def remove_control_rod_from_core(self, control_rod):
@@ -101,14 +94,8 @@ class Core:
     def get_moderator_list(self):
         return self.moderator_list
 
-    def get_control_rod_list_E(self):
-        return self.control_rod_list_E
-
-    def get_control_rod_list_O(self):
-        return self.control_rod_list_O
-
-    # def get_control_rod_list(self):
-    #     return self.control_rod_list
+    def get_control_rod_list(self):
+        return self.control_rod_list
 
     def get_fuel_rod_list(self):
         return self.fuel_rod_list

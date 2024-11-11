@@ -73,4 +73,7 @@ class ControlRod:
 
     def get_reach_bottom(self):
         return self.reach_bottom
-    
+    def get_tag(self):
+        return self.tag
+    def set_tag(self,tag):
+        self.tag = tag

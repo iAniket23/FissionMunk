@@ -23,15 +23,16 @@ for i in range(10, 1220, 120):
     moderator = Moderator(length=10, width=580, position=(i, 290), material=Material.GRAPHITE)
     core.add_moderator_to_core(moderator)
 
-
+c = 0
 for i in range(70, 1220, 120):
-    if i % 2 == 0:
-        tag = "E"
-    else:
+
+    if c % 2 == 0:
         tag = "O"
+    else:
+        tag = "E"
     control_rod = ControlRod(length=10, width=600, position=(i, 0), tag=tag, movement_range=[20, 580],material=Material.BORON_CARBIDE)
     core.add_control_rod_to_core(control_rod)
-
+    c += 1
 for i in range(25, 1205, 30):
     fuel_rod = Fuel(fuel_element_gap=10,uranium_occurance_probability=0.0001, xenon_occurance_probability=0.00001, xenon_decay_probability=0.00001, element_radius=10, width=560, position=(i, 25))
     core.add_fuel_rod_to_core(fuel_rod)
@@ -46,10 +47,8 @@ mechanics = Mechanics(core)
 
 def game():
     font = pygame.font.Font('freesansbold.ttf', 15)
-
-    # create a text surface object,
-    # on which text is drawn on it.
-    # red color of text
+    activate_E = False
+    activate_O = True
 
     while True:
         for event in pygame.event.get():
@@ -121,32 +120,34 @@ def game():
             pos = int(pos.x), int(pos.y)
             pygame.draw.rect(display, (0, 0, 0), (pos[0] - moderator.get_length() // 2, pos[1] - moderator.width // 2, moderator.get_length(), moderator.width), 1)
 
-        # keys = pygame.key.get_pressed()
-        # movement = 0
-        # if keys[pygame.K_UP]:
-        #     movement = -5
-        # elif keys[pygame.K_DOWN]:
-        #     movement = 5
+        keys = pygame.key.get_pressed()
 
         movement = 0
-        movement2 = 0
         if int(num) >=40:
             movement = 1
         else:
             movement = -1
 
-        for control_rod in core.get_control_rod_list_E():
-            control_rod.move_control_rod(movement)
-            pos = control_rod.get_body().position
-            pos = int(pos.x), int(pos.y)
-            pygame.draw.rect(display, (128, 128, 128), (pos[0] - control_rod.get_length() // 2, pos[1] - control_rod.width // 2, control_rod.get_length(), control_rod.width))
+        if keys[pygame.K_UP]:
+            movement = -1
+        elif keys[pygame.K_DOWN]:
+            movement = 1
 
-        for control_rod in core.get_control_rod_list_O():
-            control_rod.move_control_rod(movement2)
-            pos = control_rod.get_body().position
-            pos = int(pos.x), int(pos.y)
-            pygame.draw.rect(display, (128, 128, 128), (pos[0] - control_rod.get_length() // 2, pos[1] - control_rod.width // 2, control_rod.get_length(), control_rod.width))
-
+        for control_rod in core.get_control_rod_list():
+            if control_rod.get_tag() == "E":
+                if activate_E:
+                    control_rod.move_control_rod(movement)
+                pos = control_rod.get_body().position
+                pos = int(pos.x), int(pos.y)
+                pygame.draw.rect(display, (128, 128, 128), (pos[0] - control_rod.get_length() // 2, pos[1] - control_rod.width // 2, control_rod.get_length(), control_rod.width))
+                activate_O = True if control_rod.get_reach_bottom() or not activate_E else False
+            else:
+                if activate_O:
+                    control_rod.move_control_rod(movement)
+                pos = control_rod.get_body().position
+                pos = int(pos.x), int(pos.y)
+                pygame.draw.rect(display, (128, 128, 128), (pos[0] - control_rod.get_length() // 2, pos[1] - control_rod.width // 2, control_rod.get_length(), control_rod.width))
+                activate_E = True if control_rod.get_reach_top() or not activate_O else False
         display.blit(text, textRect)
         pygame.display.update()
         clock.tick(FPS)
