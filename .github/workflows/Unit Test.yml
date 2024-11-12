@@ -35,7 +35,6 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest
-      working-directory: ..
+        pytest ./FissionMunk/tests/
 
 
