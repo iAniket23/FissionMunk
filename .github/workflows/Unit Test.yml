@@ -10,26 +10,26 @@ on:
 
 jobs:
   test:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3  # Updated to the latest version
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3  # Updated to the latest version
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pymunk
+        python -m pip install pymunk
 
     - name: Run tests
       run: |
