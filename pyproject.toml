@@ -10,10 +10,10 @@ repository = "https://github.com/iAniket23/fissionmunk"
 keywords = ["fission", "nuclear", "physics", "simulation", "reactor", "2D", "python", "library", "open-source", "pymunk", "ianiket23"]
 
 [tool.poetry.dependencies]
-python = "^3.11"
-pymunk = "^6.9.0"
+python = ">=3.11"
+pymunk = ">=6.9.0"
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core", "pymunk"]
 build-backend = "poetry.core.masonry.api"
