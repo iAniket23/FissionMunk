@@ -4,6 +4,10 @@ version = "0.0.1"
 description = "FissionMunk is a lightweight 2D physics open source python library designed to simulate nuclear fission reactor mechanics."
 authors = ["Aniket Mishra <ianiket23@gmail.com>"]
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/iAniket23/fissionmunk"
+repository = "https://github.com/iAniket23/fissionmunk"
+keywords = ["fission", "nuclear", "physics", "simulation", "reactor", "2D", "python", "library", "open-source", "pymunk", "ianiket23"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
