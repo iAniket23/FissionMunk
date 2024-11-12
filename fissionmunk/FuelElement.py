@@ -1,5 +1,5 @@
-from .material import MaterialType as Material
-from ..helper import get_probability
+from .Material import MaterialType as Material
+from .helper import get_probability
 import pymunk
 
 # Fuel Element class

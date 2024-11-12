@@ -1,6 +1,6 @@
 # import the necessary packages
 import pymunk
-from .material import MaterialType as Material
+from .Material import MaterialType as Material
 
 # ControlRod class
 class ControlRod:

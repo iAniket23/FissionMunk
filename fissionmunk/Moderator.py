@@ -1,6 +1,6 @@
 # Slows down neutron speed and bring it to Fission speed
 import pymunk
-from .material import MaterialType as Material
+from .Material import MaterialType as Material
 
 class Moderator:
     def __init__(self, length, width, position, material = Material.WATER):

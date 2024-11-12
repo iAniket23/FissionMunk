@@ -1,6 +1,6 @@
-from .material import MaterialType as Material
-from .fuelElement import FuelElement
-from ..helper import get_probability
+from .Material import MaterialType as Material
+from .FuelElement import FuelElement
+from .helper import get_probability
 
 # Fuel rod class
 class Fuel:

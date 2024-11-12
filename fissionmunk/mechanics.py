@@ -1,12 +1,12 @@
 import math
 import random
 import pymunk
-from core.objects.neutron import Neutron
-from core.objects.water import Water
-from core.objects.fuel import FuelElement
-from core.objects.material import MaterialType as Material
+from .Neutron import Neutron
+from .Water import Water
+from .FuelElement import FuelElement
+from .Fuel import Fuel
+from .Material import MaterialType as Material
 from .helper import get_probability
-
 # Mechanics class
 class Mechanics:
     def __init__(self, core = None):

@@ -1,11 +1,13 @@
-from .core.objects.core import Core
-from .core.objects.neutron import Neutron
-from .core.objects.moderator import Moderator
-from .core.objects.controlRod import ControlRod
-from .core.objects.fuel import Fuel
-from .core.objects.water import Water
+from .Material import MaterialType as Material
+from .Fuel import Fuel
+from .Moderator import Moderator
+from .ControlRod import ControlRod
+from .Water import Water
+from .mechanics import Mechanics
+from .Core import Core
+from .Neutron import Neutron
+from .helper import get_probability
+from .helper import EventDispatcher
 
-from .core.mechanics import Mechanics
-from .core.helper import EventDispatcher, get_probability
 
-__all__ = ['Core', 'Neutron', 'Moderator', 'ControlRod', 'Fuel', 'Water', 'Mechanics', 'EventDispatcher', 'get_probability']
+__all__ = ['Core', 'Neutron', 'Moderator', 'ControlRod', 'Fuel', 'Water', 'Mechanics', 'EventDispatcher', 'get_probability', 'Material']

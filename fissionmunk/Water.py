@@ -1,5 +1,5 @@
 import pymunk
-from .material import MaterialType as Material
+from .Material import MaterialType as Material
 
 class Water:
     body_to_water = {}
