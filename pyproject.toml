@@ -11,6 +11,7 @@ keywords = ["fission", "nuclear", "physics", "simulation", "reactor", "2D", "pyt
 
 [tool.poetry.dependencies]
 python = "^3.11"
+pymunk = "^6.9.0"
 
 
 [build-system]
