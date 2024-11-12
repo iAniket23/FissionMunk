@@ -31,11 +31,11 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pymunk
         python -m pip install pytest
-      working-directory: /home/runner/work/FissionMunk/
+      working-directory: /users/runner/work/FissionMunk/
 
     - name: Run tests
       run: |
         pytest
-      working-directory: /home/runner/work/FissionMunk/
+      working-directory: /users/runner/work/FissionMunk/
 
 
