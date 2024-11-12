@@ -1,4 +1,4 @@
-from fissionmunk.core.objects import core
+from fissionmunk import core
 import pymunk
 
 def test_create_core():

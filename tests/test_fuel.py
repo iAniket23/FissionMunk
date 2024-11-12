@@ -1,7 +1,7 @@
-from fissionmunk.core.objects import fuel
-from fissionmunk.core.objects import fuelElement
-from fissionmunk.core.objects import core
-from fissionmunk.core.objects.material import MaterialType as material
+from fissionmunk import fuel
+from fissionmunk import fuelElement
+from fissionmunk import core
+from fissionmunk import MaterialType as material
 
 def create_core():
     c = core.Core(length=1220, width=600,thermal_factor=4, cold_factor=1, fast_factor=10)

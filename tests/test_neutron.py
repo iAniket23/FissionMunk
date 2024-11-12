@@ -1,5 +1,5 @@
-from fissionmunk.core.objects import neutron
-from fissionmunk.core.objects import core
+from fissionmunk import neutron
+from fissionmunk import core
 
 def create_core():
     c = core.Core(length=1220, width=600,thermal_factor=4, cold_factor=1, fast_factor=10)

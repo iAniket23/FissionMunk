@@ -8,12 +8,12 @@
 
 2024, Aniket Mishra - [ianiket23@github.io](https://ianiket23.github.io/)
 
-- Website: 
+- Website:
 - Documentation:  
 - Source code: [https://github.com/iAniket23/fissionmunk](https://github.com/iAniket23/fissionmunk)  
 - Contributing:
 - Bug reports: [https://github.com/iAniket23/fissionmunk/issues](https://github.com/iAniket23/fissionmunk/issues)  
-- Report a security vulnerability: 
+- Report a security vulnerability:
 
 ## Installation
 
