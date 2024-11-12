@@ -1,10 +1,10 @@
 import math
 import random
 import pymunk
-from core.objects.Neutron import Neutron
-from core.objects.Water import Water
-from core.objects.Fuel import FuelElement
-from core.objects.Material import MaterialType as Material
+from core.objects.neutron import Neutron
+from core.objects.water import Water
+from core.objects.fuel import FuelElement
+from core.objects.material import MaterialType as Material
 from .helper import get_probability
 
 # Mechanics class

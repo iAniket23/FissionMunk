@@ -1,5 +1,5 @@
-from .Material import MaterialType as Material
-from .FuelElement import FuelElement
+from .material import MaterialType as Material
+from .fuelElement import FuelElement
 from ..helper import get_probability
 
 # Fuel rod class
@@ -36,3 +36,18 @@ class Fuel:
     # get the fuel elements list
     def get_fuel_elements(self):
         return self.fuel_elements
+
+    # get the length of the fuel rod
+    def get_length(self):
+        return self.length
+
+    # get the width of the fuel rod
+    def get_width(self):
+        return self.width
+
+    # get the position of the fuel rod
+    def get_position(self):
+        return self.position
+
+    def get_radius(self):
+        return self.radius

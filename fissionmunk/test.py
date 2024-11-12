@@ -1,13 +1,13 @@
 # Import Neutron file from objects package
 import pygame
-from core.objects.Neutron import Neutron
-from core.objects.Core import Core
-from core.objects.Moderator import Moderator
-from core.objects.ControlRod import ControlRod
-from core.objects.Fuel import Fuel
-from core.objects.Material import MaterialType as Material
+from core.objects.neutron import Neutron
+from core.objects.core import Core
+from core.objects.moderator import Moderator
+from core.objects.controlRod import ControlRod
+from core.objects.fuel import Fuel
+from core.objects.material import MaterialType as Material
 from core.mechanics import Mechanics as Mechanics
-from core.objects.Water import Water
+from core.objects.water import Water
 
 # Initialize Pygame
 pygame.init()

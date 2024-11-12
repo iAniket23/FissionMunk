@@ -44,6 +44,7 @@ class Core:
     def remove_neutron_from_core(self, neutron):
         self.space.remove(neutron.get_body(), neutron.get_shape())
         self.neutron_list.remove(neutron)
+        neutron.remove_neutron()
 
     def add_water_to_core(self, water):
         self.space.add(water.get_body(), water.get_shape())

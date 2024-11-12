@@ -1,4 +1,4 @@
-from .Material import MaterialType as Material
+from .material import MaterialType as Material
 from ..helper import get_probability
 import pymunk
 
@@ -18,7 +18,12 @@ class FuelElement:
         self.radius = radius
 
         # creating the fuel element body and shape
-        self.body, self.shape = self.create_non_uranium_fuel_element() if self.material == Material.NON_FISSILE else self.create_uranium_fuel_element()
+        if self.material == Material.NON_FISSILE:
+            self.body, self.shape = self.create_non_uranium_fuel_element()
+        elif self.material == Material.FISSILE:
+            self.body, self.shape = self.create_uranium_fuel_element()
+        elif self.material == Material.XENON:
+            self.body, self.shape = self.create_xenon_fuel_element()
 
         # adding the fuel element to the dictionary
         FuelElement.body_to_fuel_element[(self.body, self.shape)] = self
@@ -42,6 +47,7 @@ class FuelElement:
 
     # create xenon fuel element
     def create_xenon_fuel_element(self):
+        print("Creating xenon fuel element")
         fuel_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         fuel_shape = pymunk.Circle(fuel_body, self.radius)
         fuel_shape.collision_type = 8
@@ -82,3 +88,6 @@ class FuelElement:
 
     def get_radius(self):
         return self.radius
+
+    def get_collision_type(self):
+        return self.shape.collision_type
