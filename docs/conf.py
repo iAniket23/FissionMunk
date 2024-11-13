@@ -23,10 +23,18 @@ extensions = [
         'sphinx.ext.autosummary',
         'sphinx_autodoc_typehints',
 ]
+# Enable autosummary generation of stub files
+autosummary_generate = True
+
+# Autodoc settings
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'show-inheritance': True,
+}
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-autosummary_generate = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

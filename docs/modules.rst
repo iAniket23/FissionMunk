@@ -1,11 +1,6 @@
 fissionmunk
 ===========
 
-Contents
----------------
-* :ref:`genindex`
-* :ref:`modindex`
-
 .. toctree::
    :maxdepth: 4
 

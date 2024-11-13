@@ -1,11 +1,6 @@
 tests package
 =============
 
-Contents
----------------
-* :ref:`genindex`
-* :ref:`modindex`
-
 Submodules
 ----------
 

@@ -1,20 +1,6 @@
 fissionmunk package
 ===================
 
-
-Contents
----------------
-* :ref:`genindex`
-* :ref:`modindex`
-
-Module contents
----------------
-
-.. automodule:: fissionmunk
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Submodules
 ----------
 
@@ -94,6 +80,14 @@ fissionmunk.mechanics module
 ----------------------------
 
 .. automodule:: fissionmunk.mechanics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: fissionmunk
    :members:
    :undoc-members:
    :show-inheritance:
