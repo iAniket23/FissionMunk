@@ -1,0 +1,45 @@
+site_name: FissionMunk Documentation
+site_url: https://iAniket23.github.io/fissionmunk/
+repo_url: https://github.com/iAniket23/fissionmunk
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - API Reference:
+      - Core: api/core.md
+      - Neutron: api/neutron.md
+      - Moderator: api/moderator.md
+      - Control Rod: api/control_rod.md
+      - Fuel: api/fuel.md
+      - Water: api/water.md
+      - Mechanics: api/mechanics.md
+      - Helper: api/helper.md
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - def_list
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
