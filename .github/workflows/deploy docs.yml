@@ -24,6 +24,9 @@ jobs:
       - name: Add .nojekyll
         run: |
           touch docs/_build/html/.nojekyll
+          touch docs/_build/.nojekyll
+          touch docs/.nojekyll
+          touch .nojekyll
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
