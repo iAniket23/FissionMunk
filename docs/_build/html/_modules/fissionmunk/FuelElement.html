@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fissionmunk.FuelElement &mdash; Fissionmunk 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Fissionmunk
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fissionmunk.html">fissionmunk package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests.html">tests package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Fissionmunk</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fissionmunk.FuelElement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fissionmunk.FuelElement</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.Material</span> <span class="kn">import</span> <span class="n">MaterialType</span> <span class="k">as</span> <span class="n">Material</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">get_probability</span>
+<span class="kn">import</span> <span class="nn">pymunk</span>
+
+<span class="c1"># Fuel Element class</span>
+<div class="viewcode-block" id="FuelElement">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement">[docs]</a>
+<span class="k">class</span> <span class="nc">FuelElement</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This class is used to create a fuel element.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">body_to_fuel_element</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">uranium_occurance_probability</span><span class="p">,</span> <span class="n">xenon_occurance_probability</span><span class="p">,</span> <span class="n">xenon_decay_probability</span><span class="p">,</span> <span class="n">material</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">FISSILE</span><span class="p">):</span>
+        <span class="c1"># Probability</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to initialize the fuel element.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                radius: int</span>
+<span class="sd">                    The radius of the fuel element.</span>
+<span class="sd">                uranium_occurance_probability: float</span>
+<span class="sd">                    The probability of uranium occurance in the fuel element.</span>
+<span class="sd">                xenon_occurance_probability: float</span>
+<span class="sd">                    The probability of xenon occurance in the fuel element.</span>
+<span class="sd">                xenon_decay_probability: float</span>
+<span class="sd">                    The probability of xenon decay in the fuel element.</span>
+<span class="sd">                material: Material</span>
+<span class="sd">                    The material of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uranium_occurance_probability</span> <span class="o">=</span> <span class="n">uranium_occurance_probability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xenon_occurance_probability</span> <span class="o">=</span> <span class="n">xenon_occurance_probability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xenon_decay_probability</span> <span class="o">=</span> <span class="n">xenon_decay_probability</span>
+
+        <span class="c1"># material of the fuel element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">material</span>
+
+        <span class="c1"># radius of the fuel element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+
+        <span class="c1"># creating the fuel element body and shape</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">NON_FISSILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_non_uranium_fuel_element</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">FISSILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_uranium_fuel_element</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">XENON</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_xenon_fuel_element</span><span class="p">()</span>
+
+        <span class="c1"># adding the fuel element to the dictionary</span>
+        <span class="n">FuelElement</span><span class="o">.</span><span class="n">body_to_fuel_element</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="c1"># create Uranium fuel element</span>
+<div class="viewcode-block" id="FuelElement.create_uranium_fuel_element">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.create_uranium_fuel_element">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_uranium_fuel_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to create a uranium fuel element.</span>
+<span class="sd">            This method is not public and should not be called from outside the class.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                fuel_body: pymunk.Body</span>
+<span class="sd">                    The body of the fuel element.</span>
+<span class="sd">                fuel_shape: pymunk.Circle</span>
+<span class="sd">                    The shape of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fuel_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span><span class="o">=</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
+        <span class="n">fuel_shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">fuel_body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">fuel_shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">fuel_shape</span><span class="o">.</span><span class="n">sensor</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">fuel_body</span><span class="p">,</span> <span class="n">fuel_shape</span></div>
+
+
+    <span class="c1"># create non-uranium fuel element</span>
+<div class="viewcode-block" id="FuelElement.create_non_uranium_fuel_element">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.create_non_uranium_fuel_element">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_non_uranium_fuel_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to create a non-uranium fuel element.</span>
+<span class="sd">            This method is not public and should not be called from outside the class.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                fuel_body: pymunk.Body</span>
+<span class="sd">                    The body of the fuel element.</span>
+<span class="sd">                fuel_shape: pymunk.Circle</span>
+<span class="sd">                    The shape of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fuel_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span><span class="o">=</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
+        <span class="n">fuel_shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">fuel_body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">fuel_shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">fuel_shape</span><span class="o">.</span><span class="n">sensor</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">fuel_body</span><span class="p">,</span> <span class="n">fuel_shape</span></div>
+
+
+    <span class="c1"># create xenon fuel element</span>
+<div class="viewcode-block" id="FuelElement.create_xenon_fuel_element">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.create_xenon_fuel_element">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_xenon_fuel_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to create a xenon fuel element.</span>
+<span class="sd">            This method is not public and should not be called from outside the class.</span>
+<span class="sd">            </span>
+<span class="sd">            Returns:</span>
+<span class="sd">                fuel_body: pymunk.Body</span>
+<span class="sd">                    The body of the fuel element.</span>
+<span class="sd">                fuel_shape: pymunk.Circle</span>
+<span class="sd">                    The shape of the fuel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fuel_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span><span class="o">=</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
+        <span class="n">fuel_shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">fuel_body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">fuel_shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="n">fuel_shape</span><span class="o">.</span><span class="n">sensor</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">fuel_body</span><span class="p">,</span> <span class="n">fuel_shape</span></div>
+
+
+<div class="viewcode-block" id="FuelElement.change_material">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.change_material">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to change the material of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get probability</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">get_probability</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">NON_FISSILE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">xenon_occurance_probability</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_material</span><span class="p">(</span><span class="n">Material</span><span class="o">.</span><span class="n">XENON</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">uranium_occurance_probability</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_material</span><span class="p">(</span><span class="n">Material</span><span class="o">.</span><span class="n">FISSILE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">XENON</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">xenon_decay_probability</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_material</span><span class="p">(</span><span class="n">Material</span><span class="o">.</span><span class="n">NON_FISSILE</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FuelElement.get_body">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.get_body">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to get the body of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                body: pymunk.Body</span>
+<span class="sd">                    The body of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span></div>
+
+
+<div class="viewcode-block" id="FuelElement.get_shape">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.get_shape">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to get the shape of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                shape: pymunk.Circle</span>
+<span class="sd">                    The shape of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span></div>
+
+
+<div class="viewcode-block" id="FuelElement.get_material">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.get_material">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_material</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to get the material of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                material: Material</span>
+<span class="sd">                    The material of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span></div>
+
+
+<div class="viewcode-block" id="FuelElement.set_material">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.set_material">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">material</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to set the material of the fuel element.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                material: Material</span>
+<span class="sd">                    The material of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">material</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">FISSILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">NON_FISSILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="n">Material</span><span class="o">.</span><span class="n">XENON</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">8</span></div>
+
+
+<div class="viewcode-block" id="FuelElement.get_radius">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.get_radius">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to get the radius of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                radius: int</span>
+<span class="sd">                    The radius of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span></div>
+
+
+<div class="viewcode-block" id="FuelElement.get_collision_type">
+<a class="viewcode-back" href="../../fissionmunk.html#fissionmunk.FuelElement.FuelElement.get_collision_type">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_collision_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The method is used to get the collision type of the fuel element.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                collision_type: int</span>
+<span class="sd">                    The collision type of the fuel element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aniket Mishra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
