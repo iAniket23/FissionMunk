@@ -16,13 +16,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme myst_parser
-          pip install sphinx-autodoc-typehints
+          pip install sphinx-autodoc-typehints pymunk
       - name: List directory structure
         run: |
           ls -R
       - name: Sphinx build
         run: |
-          sphinx-build -b html docs _build
+          sphinx-build docs _build
       - name: Add .nojekyll
         run: |
           touch docs/_build/html/.nojekyll
