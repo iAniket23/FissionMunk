@@ -11,6 +11,7 @@
 
 - **Documentation**: [https://ianiket23.github.io/FissionMunk/](https://ianiket23.github.io/FissionMunk/)
 - **Source code**: [https://github.com/iAniket23/fissionmunk](https://github.com/iAniket23/fissionmunk)  
+- **PyPI**: [https://pypi.org/project/fissionmunk/](https://pypi.org/project/fissionmunk/)
 - **Bug reports**: [https://github.com/iAniket23/fissionmunk/issues](https://github.com/iAniket23/fissionmunk/issues)  
 
 ## Features
