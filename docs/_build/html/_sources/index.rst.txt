@@ -16,6 +16,12 @@ Contents
 * :ref:`genindex`
 * :ref:`modindex`
 
+.. autosummary::
+   :toctree: _autosummary
+
+   fissionmunk.Core
+   fissionmunk
+   fissionmunk.tests
 Module contents
 ---------------
 .. automodule:: fissionmunk

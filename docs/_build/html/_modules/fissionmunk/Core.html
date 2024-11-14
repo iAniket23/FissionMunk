@@ -40,6 +40,10 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/fissionmunk.Core.html">fissionmunk.Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/fissionmunk.html">fissionmunk</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../fissionmunk.html">fissionmunk package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tests.html">tests package</a></li>
 </ul>
@@ -79,6 +83,8 @@
 <span class="sd">        The class is used to create a core object.</span>
 <span class="sd">        Core is the main object of the simulation. It contains all the objects that are used in the simulation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Core.__init__">
+<a class="viewcode-back" href="../../_autosummary/fissionmunk.Core.html#fissionmunk.Core.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">neutron_speed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">thermal_factor</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">cold_factor</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">fast_factor</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The method is used to initialize the Core object.</span>
@@ -116,7 +122,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">water_list</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Create core boundaries</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_core_boundaries</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_core_boundaries</span><span class="p">()</span></div>
+
 
     <span class="c1"># Create core boundaries</span>
 <div class="viewcode-block" id="Core.create_core_boundaries">
