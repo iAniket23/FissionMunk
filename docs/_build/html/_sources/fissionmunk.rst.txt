@@ -8,7 +8,7 @@ fissionmunk.ControlRod module
 -----------------------------
 
 .. automodule:: fissionmunk.ControlRod
-   :members:
+   :members: True
    :undoc-members:
    :show-inheritance:
 
