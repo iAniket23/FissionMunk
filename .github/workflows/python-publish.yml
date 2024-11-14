@@ -24,10 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install poetry pandoc
-    - name: Readme File
-      run: |
-        pandoc README.md --from markdown --to rst -s -o README.rst
+        pip install poetry
     - name: Build package
       run: |
         poetry check
