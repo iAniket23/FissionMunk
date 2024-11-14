@@ -54,11 +54,11 @@ FPS = 60
 ### Documentation Overview
 The following modules are included in FissionMunk and offer various simulation controls:
 
-- Core: Manages the main simulation environment and fuel elements.
-- ControlRod: Controls neutron absorption, allowing for fission rate adjustments.
-- Moderator: Slows down neutrons to maintain optimal reaction rates.
-- FuelElement: Represents fuel elements, such as uranium atoms, in the simulation.
-- Neutron: Models individual neutrons and their interactions.
+- **Core**: Manages the main simulation environment and fuel elements.
+- **ControlRod**: Controls neutron absorption, allowing for fission rate adjustments.
+- **Moderator**: Slows down neutrons to maintain optimal reaction rates.
+- **FuelElement**: Represents fuel elements, such as uranium atoms, in the simulation.
+- **Neutron**: Models individual neutrons and their interactions.
 
 Refer to the full documentation for module-specific details and usage examples.
 
