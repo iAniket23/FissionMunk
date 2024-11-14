@@ -3,23 +3,19 @@ import pymunk
 from .Material import MaterialType as Material
 
 class Moderator:
-    """
-        A class to represent a moderator in a nuclear reactor.
-        Moderators are used to slow down neutrons to speeds that are more likely to cause fission.
+    """The Moderator class represents a moderator in the simulation.
     """
     def __init__(self, length, width, position, material = Material.WATER):
-        """
-            Constructor for the Moderator class.
+        """The constructor for the Moderator class.
 
-            Args:
-                length (int):
-                    The length of the moderator.
-                width (int):
-                    The width of the moderator.
-                position (tuple):
-                    The position of the moderator.
-                material (MaterialType):
-                    The material of the moderator.
+        :param length: The length of the moderator.
+        :type length: float
+        :param width: The width of the moderator.
+        :type width: float
+        :param position: The position of the moderator.
+        :type position: tuple
+        :param material: The material of the moderator, defaults to Material.WATER
+        :type material: MaterialType, optional
         """
         self.length = length
         self.width = width
@@ -34,12 +30,10 @@ class Moderator:
         self.shape.sensor = True
 
     def create_moderator(self):
-        """
-        Creates a moderator body and shape.
+        """The create_moderator method creates the moderator body and shape.
 
-        Returns:
-            rect_body (pymunk.Body): body of the moderator.
-            rect_shape (pymunk.Poly): shape of the moderator.
+        :return: The moderator body and shape.
+        :rtype: tuple
         """
         rect_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         rect_shape = pymunk.Poly.create_box(rect_body, (self.length, self.width))
@@ -47,73 +41,59 @@ class Moderator:
 
     # Getters and Setters
     def get_body(self):
-        """
-            Returns the body of the moderator.
+        """The get_body method returns the body of the moderator.
 
-            Returns:
-                body (pymunk.Body):
-                    The body of the moderator.
+        :return: The body of the moderator.
+        :rtype: pymunk.Body
         """
         return self.body
 
     def get_shape(self):
-        """
-            Returns the shape of the moderator.
+        """The get_shape method returns the shape of the moderator.
 
-            Returns:
-                shape (pymunk.Poly):
-                    The shape of the moderator.
+        :return: The shape of the moderator.
+        :rtype: pymunk.Shape
         """
         return self.shape
 
     def get_length(self):
-        """
-            Returns the length of the moderator.
+        """The get_length method returns the length of the moderator.
 
-            Returns:
-                length (int):
-                    The length of the moderator.
+        :return: The length of the moderator.
+        :rtype: float
         """
         return self.length
 
     def get_width(self):
-        """
-            Returns the width of the moderator.
+        """The get_width method returns the width of the moderator.
 
-            Returns:
-                width (int):
-                    The width of the moderator.
+        :return: The width of the moderator.
+        :rtype: float
         """
         return self.width
 
     def get_position(self):
-        """
-            Returns the position of the moderator.
+        """The get_position method returns the position of the moderator.
 
-            Returns:
-                position (tuple):
-                    The position of the moderator.
+        :return: The position of the moderator.
+        :rtype: tuple
         """
         return self.body.position
     def set_position(self, position):
-        """
-            Sets the position of the moderator.
+        """The set_position method sets the position of the moderator.
 
-            Args:
-                position (tuple):
-                    The position of the moderator.
-
-            Returns:
-                None
+        :param position: The position of the moderator.
+        :type position: tuple
+        :return: None
+        :rtype: None
         """
         self.body.position = position
+        return None
 
     def get_material(self):
-        """
-            Returns the material of the moderator.
+        """The get_material method returns the material of the moderator.
 
-            Returns:
-                material (MaterialType):
-                    The material of the moderator.
+        :return: The material of the moderator.
+        :rtype: MaterialType
         """
         return self.material

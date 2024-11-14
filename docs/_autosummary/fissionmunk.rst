@@ -1,6 +1,0 @@
-﻿fissionmunk
-===========
-
-.. automodule:: fissionmunk
-
-   

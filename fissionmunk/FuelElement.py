@@ -4,29 +4,22 @@ import pymunk
 
 # Fuel Element class
 class FuelElement:
-    """
-        This class is used to create a fuel element.
+    """This class is used to create a fuel element.
     """
     body_to_fuel_element = {}
     def __init__(self, radius, uranium_occurance_probability, xenon_occurance_probability, xenon_decay_probability, material = Material.FISSILE):
-        # Probability
-        """
-            The method is used to initialize the fuel element.
+        """The constructor of the FuelElement class.
 
-            Args:
-                radius: int
-                    The radius of the fuel element.
-                uranium_occurance_probability: float
-                    The probability of uranium occurance in the fuel element.
-                xenon_occurance_probability: float
-                    The probability of xenon occurance in the fuel element.
-                xenon_decay_probability: float
-                    The probability of xenon decay in the fuel element.
-                material: Material
-                    The material of the fuel element.
-
-            Returns:
-                None
+        :param radius: The radius of the fuel element.
+        :type radius: int
+        :param uranium_occurance_probability: The probability of uranium occurance.
+        :type uranium_occurance_probability: float
+        :param xenon_occurance_probability: The probability of xenon occurance.
+        :type xenon_occurance_probability: float
+        :param xenon_decay_probability: The probability of xenon decay.
+        :type xenon_decay_probability: float
+        :param material: The material of the fuel element, defaults to Material.FISSILE
+        :type material: MaterialType, optional
         """
         self.uranium_occurance_probability = uranium_occurance_probability
         self.xenon_occurance_probability = xenon_occurance_probability
@@ -51,15 +44,10 @@ class FuelElement:
 
     # create Uranium fuel element
     def create_uranium_fuel_element(self):
-        """
-            The method is used to create a uranium fuel element.
-            This method is not public and should not be called from outside the class.
+        """This method is used to create a uranium fuel element.
 
-            Returns:
-                fuel_body: pymunk.Body
-                    The body of the fuel element.
-                fuel_shape: pymunk.Circle
-                    The shape of the fuel element.
+        :return: fuel_body, fuel_shape
+        :rtype: pymunk.Body, pymunk.Circle
         """
         fuel_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         fuel_shape = pymunk.Circle(fuel_body, self.radius)
@@ -70,15 +58,10 @@ class FuelElement:
 
     # create non-uranium fuel element
     def create_non_uranium_fuel_element(self):
-        """
-            The method is used to create a non-uranium fuel element.
-            This method is not public and should not be called from outside the class.
+        """This method is used to create a non-uranium fuel element.
 
-            Returns:
-                fuel_body: pymunk.Body
-                    The body of the fuel element.
-                fuel_shape: pymunk.Circle
-                    The shape of the fuel element.
+        :return: fuel_body, fuel_shape
+        :rtype: pymunk.Body, pymunk.Circle
         """
         fuel_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         fuel_shape = pymunk.Circle(fuel_body, self.radius)
@@ -88,15 +71,10 @@ class FuelElement:
 
     # create xenon fuel element
     def create_xenon_fuel_element(self):
-        """
-            The method is used to create a xenon fuel element.
-            This method is not public and should not be called from outside the class.
-            
-            Returns:
-                fuel_body: pymunk.Body
-                    The body of the fuel element.
-                fuel_shape: pymunk.Circle
-                    The shape of the fuel
+        """This method is used to create a xenon
+
+        :return: fuel_body, fuel_shape
+        :rtype: pymunk.Body, pymunk.Circle
         """
         fuel_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         fuel_shape = pymunk.Circle(fuel_body, self.radius)
@@ -105,11 +83,10 @@ class FuelElement:
         return fuel_body, fuel_shape
 
     def change_material(self):
-        """
-            The method is used to change the material of the fuel element.
+        """This method is used to change the material of the fuel element.
 
-            Returns:
-                None
+        :return: None
+        :rtype: None
         """
         # get probability
         prob = get_probability()
@@ -122,48 +99,39 @@ class FuelElement:
         elif self.material == Material.XENON:
             if prob < self.xenon_decay_probability:
                 self.set_material(Material.NON_FISSILE)
-
+        return None
 
     def get_body(self):
-        """
-            The method is used to get the body of the fuel element.
+        """This method is used to get the body of the fuel element.
 
-            Returns:
-                body: pymunk.Body
-                    The body of the fuel element.
+        :return: body
+        :rtype: pymunk.Body
         """
         return self.body
 
     def get_shape(self):
-        """
-            The method is used to get the shape of the fuel element.
+        """This method is used to get the shape of the fuel element.
 
-            Returns:
-                shape: pymunk.Circle
-                    The shape of the fuel element.
+        :return: shape
+        :rtype: pymunk.Circle
         """
         return self.shape
 
     def get_material(self):
-        """
-            The method is used to get the material of the fuel element.
+        """This method is used to get the material of the fuel element.
 
-            Returns:
-                material: Material
-                    The material of the fuel element.
+        :return: material
+        :rtype: MaterialType
         """
         return self.material
 
     def set_material(self, material):
-        """
-            The method is used to set the material of the fuel element.
+        """This method is used to set the material of the fuel element.
 
-            Args:
-                material: Material
-                    The material of the fuel element.
-
-            Returns:
-                None
+        :param material: The material of the fuel element.
+        :type material: MaterialType
+        :return: None
+        :rtype: None
         """
         self.material = material
         if self.material == Material.FISSILE:
@@ -173,22 +141,20 @@ class FuelElement:
         elif self.material == Material.XENON:
             self.shape.collision_type = 8
 
-    def get_radius(self):
-        """
-            The method is used to get the radius of the fuel element.
+        return None
 
-            Returns:
-                radius: int
-                    The radius of the fuel element.
+    def get_radius(self):
+        """This method is used to get the radius of the fuel element.
+
+        :return: radius
+        :rtype: int
         """
         return self.radius
 
     def get_collision_type(self):
-        """
-            The method is used to get the collision type of the fuel element.
+        """This method is used to get the collision type of the fuel element.
 
-            Returns:
-                collision_type: int
-                    The collision type of the fuel element.
+        :return: collision_type
+        :rtype: int
         """
         return self.shape.collision_type

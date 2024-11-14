@@ -1,6 +1,0 @@
-﻿tests
-=====
-
-.. automodule:: tests
-
-   

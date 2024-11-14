@@ -1,8 +1,10 @@
 import enum
 
 class MaterialType(enum.Enum):
-    """
-        Enum class for the different types of materials that can be used in the simulation.
+    """The type of material that is being used in the simulation.
+
+    :param enum: The type of material that is being used in the simulation.
+    :type enum: enum.Enum
     """
     WATER = "water"
     GRAPHITE = "graphite"

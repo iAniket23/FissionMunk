@@ -9,19 +9,13 @@ from .Material import MaterialType as Material
 from .helper import get_probability
 # Mechanics class
 class Mechanics:
-    """
-        Mechanics class for the simulation
-        This class is responsible for handling the physics of the simulation
+    """The Mechanics class is responsible for handling the physics of the simulation.
     """
     def __init__(self, core = None):
-        """
-            Constructor for the Mechanics class
+        """The constructor for the Mechanics class.
 
-            Args:
-                core: Core object
-
-            Returns:
-                None
+        :param core: The core object, defaults to None
+        :type core: Core, optional
         """
         self.core = core
         self.space = core.get_space()
@@ -54,16 +48,16 @@ class Mechanics:
         NW_handler.separate = self.neutron_water_collision_remove
 
     def neutron_water_collision_add(self, arbiter, space, data):
-        """
-            Method to handle neutron-water collision
+        """The method to handle neutron-water collision
 
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
         try:
             prob = get_probability()
@@ -84,16 +78,16 @@ class Mechanics:
             return False
 
     def neutron_water_collision_remove(self, arbiter, space, data):
-        """
-            Method to handle neutron-water collision
+        """The method to handle neutron-water collision
 
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
         try:
             neutron_shape, water_shape = arbiter.shapes
@@ -104,35 +98,38 @@ class Mechanics:
             return False
 
     def regulate_water_temperature(self):
-        """
-            Method to regulate the temperature of the water
-            It decreases the temperature of the water every time step.
+        """The method to regulate the water temperature
+
+        :return: None
+        :rtype: None
         """
         for water in self.core.get_water_list():
             water.change_temperature(-0.5)
+        return None
 
     def regulate_fuel_element_occurence(self):
-        """
-            Method to regulate the fuel element occurence
-            It changes the material of the fuel element every time step.
+        """The method to regulate the fuel element occurence
+
+        :return: None
+        :rtype: None
         """
         for fuel_rod in self.core.get_fuel_rod_list():
             for fuel_element in fuel_rod.get_fuel_elements():
                 fuel_element.change_material()
+        return None
 
     def neutron_boundary_collision(self, arbiter, space, data):
+        """The method to handle neutron-boundary collision
+
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
-            Method to handle neutron-boundary collision
-
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
-        """
-
         try:
             neutron_shape, boundary_shape = arbiter.shapes
             neutron = Neutron.body_to_neutron[(neutron_shape.body, neutron_shape)]
@@ -145,16 +142,16 @@ class Mechanics:
             return False
 
     def neutron_moderator_collision(self, arbiter, space, data):
-        """
-            Method to handle neutron-moderator collision
+        """The method to handle neutron-moderator collision
 
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
         try:
             neutron_shape, moderator_shape = arbiter.shapes
@@ -182,17 +179,16 @@ class Mechanics:
             return False
 
     def neutron_control_rod_collision(self, arbiter, space, data):
+        """The method to handle neutron-control rod collision
 
-        """
-            Method to handle neutron-control rod collision
-
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
         try:
             neutron_shape, control_rod_shape = arbiter.shapes
@@ -208,17 +204,16 @@ class Mechanics:
             return False
 
     def neutron_fuel_element_collision(self, arbiter, space, data):
+        """The method to handle neutron-fuel element collision
 
-        """
-            Method to handle neutron-fuel element collision
-
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
         try:
             neutron_shape, fuel_element_shape = arbiter.shapes
@@ -275,16 +270,16 @@ class Mechanics:
             return False
 
     def neutron_xenon_collision(self, arbiter, space, data):
-        """
-            Method to handle neutron-xenon collision
+        """The method to handle neutron-xenon collision
 
-            Args:
-                arbiter: Arbiter object
-                space: Space object
-                data: Data object
-
-            Returns:
-                True if successful, False otherwise
+        :param arbiter: arbiter object
+        :type arbiter: Arbiter
+        :param space: space object
+        :type space: Space
+        :param data: data object
+        :type data: Data
+        :return: True if successful, False otherwise
+        :rtype: bool
         """
         try:
             neutron_shape, xenon_shape = arbiter.shapes
@@ -302,15 +297,12 @@ class Mechanics:
             return False
 
     def generate_random_neutron(self, limit):
-        """
-            Method to generate a random neutron in the core
+        """The method to generate a random neutron
 
-            Args:
-                limit: Limit for the probability of neutron occurence
-
-            Returns:
-                True if successful, False otherwise
-
+        :param limit: The limit for the probability
+        :type limit: float
+        :return: The neutron object if successful, False otherwise
+        :rtype: Neutron
         """
         try:
             prob = get_probability()

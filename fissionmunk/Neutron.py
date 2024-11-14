@@ -2,28 +2,22 @@
 import pymunk
 
 class Neutron:
-    """
-        This class creates a neutron object.
+    """This class represents a neutron in the simulation.
     """
     body_to_neutron = {}
 
     # Constructor
     def __init__(self, speed, position, mass=0.1, radius=1):
-        """
-            Initializes the neutron object.
+        """This method initializes the neutron object.
 
-            Args:
-                speed (tuple):
-                    The speed of the neutron.
-                position (tuple):
-                    The position of the neutron.
-                mass (float):
-                    The mass of the neutron.
-                radius (float):
-                    The radius of the neutron.
-
-            Returns:
-                None
+        :param speed: The speed of the neutron.
+        :type speed: tuple
+        :param position: The position of the neutron.
+        :type position: tuple
+        :param mass: The mass of the neutron, defaults to 0.1
+        :type mass: float, optional
+        :param radius: The radius of the neutron, defaults to 1
+        :type radius: int, optional
         """
         self.mass = mass
         self.radius = radius
@@ -39,30 +33,20 @@ class Neutron:
 
     # Create a neutron object
     def create_neutron(self):
-        """
-            Creates a neutron.
-            This method is not public.
+        """This method creates a neutron object.
 
-            Returns:
-                circle_body (pymunk.Body):
-                    The body of the neutron.
-                circle_shape (pymunk.Circle):
-                    The shape of the neutron.
+        :return: The body and shape of the neutron.
+        :rtype: tuple
         """
         circle_body = pymunk.Body(self.mass, self.initialize_moment_inertia(), pymunk.Body.DYNAMIC)
         circle_shape = pymunk.Circle(circle_body, self.radius)
         return circle_body, circle_shape
 
     def remove_neutron(self):
-        """
-            Removes the neutron from the simulation.
+        """This method removes the neutron from the simulation.
 
-            Returns:
-                True (bool):
-                    If the neutron is removed successfully.
-
-                False (bool):
-                    If the neutron is not removed successfully
+        :return: True if the neutron is removed, False otherwise.
+        :rtype: bool
         """
         try:
             self.body_to_neutron.pop((self.body, self.shape))
@@ -73,104 +57,84 @@ class Neutron:
             return True
 
     def initialize_moment_inertia(self):
+        """This method initializes the moment of inertia of the neutron.
 
-        """
-            Initializes the moment of inertia of the neutron.
-
-            Returns:
-                circle_moment_inertia (float):
-                    The moment of inertia of the neutron.
+        :return: The moment of inertia of the neutron.
+        :rtype: float
         """
         circle_moment_inertia = pymunk.moment_for_circle(self.mass, 0, self.radius)
         return circle_moment_inertia
 
     def get_speed(self):
-        """
-            Returns the speed of the neutron.
+        """This method returns the speed of the neutron.
 
-            Returns:
-                self.body.velocity (tuple):
-                    The speed of the neutron.
+        :return: The speed of the neutron.
+        :rtype: tuple
         """
         return self.body.velocity
 
     def set_speed(self, speed):
-        """
-            Sets the speed of the neutron.
+        """This method sets the speed of the neutron.
 
-            Args:
-                speed (tuple):
-                    The speed of the neutron.
-
-            Returns:
-                None
+        :param speed: The speed of the neutron.
+        :type speed: tuple
+        :return: None
+        :rtype: None
         """
+
         try:
             self.body.velocity = speed
-
+            return None
         except Exception as e:
             # print(e)
             pass
 
     def get_position(self):
-        """
-            Returns the position of the neutron.
+        """This method returns the position of the neutron.
 
-            Returns:
-                self.body.position (tuple):
-                    The position of the neutron.
+        :return: The position of the neutron.
+        :rtype: tuple
         """
         return self.body.position
 
     def set_position(self, position):
-        """
-            Sets the position of the neutron.
+        """This method sets the position of the neutron.
 
-            Args:
-                position (tuple):
-                    The position of the neutron.
-
-            Returns:
-                None
+        :param position: The position of the neutron.
+        :type position: tuple
+        :return: None
+        :rtype: None
         """
         self.body.position = position
-
+        return None
     def get_mass(self):
-        """
-            Returns the mass of the neutron.
+        """This method returns the mass of the neutron.
 
-            Returns:
-                self.mass (float):
-                    The mass of the neutron
+        :return: The mass of the neutron.
+        :rtype: float
         """
         return self.mass
 
     def get_radius(self):
-        """
-            Returns the radius of the neutron.
+        """This method returns the radius of the neutron.
 
-            Returns:
-                self.radius (float):
-                    The radius of the neutron.
+        :return: The radius of the neutron.
+        :rtype: int
         """
         return self.radius
 
     def get_body(self):
-        """
-            Returns the body of the neutron.
+        """This method returns the body of the neutron.
 
-            Returns:
-                self.body (pymunk.Body):
-                    The body of the neutron.
+        :return: The body of the neutron.
+        :rtype: pymunk.Body
         """
         return self.body
 
     def get_shape(self):
-        """
-            Returns the shape of the neutron.
+        """This method returns the shape of the neutron.
 
-            Returns:
-                self.shape (pymunk.Circle):
-                    The shape of the neutron.
+        :return: The shape of the neutron.
+        :rtype: pymunk.Shape
         """
         return self.shape

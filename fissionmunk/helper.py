@@ -1,46 +1,40 @@
 import random
 
 class EventDispatcher:
-    """
-    A simple event dispatcher class that allows objects to listen for events and dispatch them.
-
+    """The class is used to dispatch events to listeners.
     """
     def __init__(self):
-        """
-            Initialize the event dispatcher.
+        """The constructor of the class.
         """
         # Dictionary to hold event names and their associated listeners
         self._listeners = {}
 
     def add_listener(self, event_name, listener):
-        """
-            Add a listener for a specific event.
+        """The function is used to add a listener for a specific event.
 
-            Args:
-                event_name: str
-                    The name of the event.
-                listener: function
-                    The listener function to be called when the event is dispatched.
-
-            Returns:
-                None
+        :param event_name: The name of the event.
+        :type event_name: str
+        :param listener: The listener function to be added.
+        :type listener: function
+        :return: None
+        :rtype: None
         """
+
         if event_name not in self._listeners:
             self._listeners[event_name] = []
         self._listeners[event_name].append(listener)
 
+        return None
+
     def remove_listener(self, event_name, listener):
-        """
-            Remove a listener for a specific event.
+        """The function is used to remove a listener for a specific event.
 
-            Args:
-                event_name: str
-                    The name of the event.
-                listener: function
-                    The listener function to be removed.
-
-            Returns:
-                None
+        :param event_name: The name of the event.
+        :type event_name: str
+        :param listener: The listener function to be removed.
+        :type listener: function
+        :return: None
+        :rtype: None
         """
         if event_name in self._listeners:
             self._listeners[event_name].remove(listener)
@@ -48,33 +42,30 @@ class EventDispatcher:
             if not self._listeners[event_name]:
                 del self._listeners[event_name]
 
+        return None
+
     def dispatch(self, event_name, *args, **kwargs):
-        """
-            Dispatch an event to all listeners.
+        """The function is used to dispatch an event to all listeners.
 
-            Args:
-                event_name: str
-                    The name of the event.
-                *args: list
-                    The arguments to be passed to the listeners.
-                **kwargs: dict
-                    The keyword arguments to be passed to the listeners.
-
-            Returns:
-                None
+        :param event_name: The name of the event.
+        :type event_name: str
+        :param args: The arguments to be passed to the listeners.
+        :type args: tuple
+        :param kwargs: The keyword arguments to be passed to the listeners.
+        :type kwargs: dict
+        :return: None
+        :rtype: None
         """
         # Dispatch the event to all listeners
         if event_name in self._listeners:
             for listener in self._listeners[event_name]:
                 listener(*args, **kwargs)
-
+        return None
 # Generate a random number between the given range
 def get_probability():
-    """
-        The function is used to generate a random number between 0 and 1.
+    """The function is used to generate a random number between 0 and 1.
 
-        Returns:
-            random_number: float
-                The random number between 0 and 1.
+    :return: A random number between 0 and 1.
+    :rtype: float
     """
     return random.random()
