@@ -18,23 +18,6 @@ Contents
 
 .. autosummary::
    :toctree: _autosummary
-
    fissionmunk.Core
    fissionmunk
-   fissionmunk.tests
-Module contents
----------------
-.. automodule:: fissionmunk
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :noindex:
-
-Submodules
-----------
-.. toctree::
-   :maxdepth: 4
-
-   fissionmunk
    tests
-
