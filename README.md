@@ -20,7 +20,10 @@
 - Open-Source: Fully open-source and extensible for customization and additional functionality.
 
 ## Getting Started with FissionMunk
-FissionMunk makes it easy to simulate and visualize nuclear fission dynamics. To get started, follow these steps:
+FissionMunk makes it easy to simulate and visualize nuclear fission dynamics.
+![rbmk](media/media_rbmk.gif)
+
+To get started, follow these steps:
 
 ### Installation
 
@@ -29,7 +32,7 @@ To install FissionMunk, use `pip`:
 pip install fissionmunk
 ```
 ### Set Up Your First Simulation
-Now that you’ve installed FissionMunk, let's create a basic simulation. First let's install a visualization library such as pygame (`pip install pygame`).
+Now that you’ve installed FissionMunk, let's create a very basic simulation. First let's install a visualization library such as pygame (`pip install pygame`).
 Here's an example to help you get started:
 
 #### Example: Basic Fission Simulation
