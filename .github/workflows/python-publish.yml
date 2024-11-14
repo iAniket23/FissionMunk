@@ -3,9 +3,7 @@
 
 name: Upload Python Package
 
-on:
-  release:
-    types: [push, published]
+on: [push, pull_request, workflow_dispatch]
 
 permissions:
   contents: read
