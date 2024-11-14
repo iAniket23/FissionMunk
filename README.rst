@@ -1,7 +1,7 @@
 FissionMunk
 ===========
 
-|Python Version| |License|
+|Python Version| |License| |PyPI version| |API Reference|
 
 **FissionMunk** is a lightweight 2D physics open source python library
 designed to simulate nuclear fission reactor mechanics. It enables users
@@ -15,21 +15,392 @@ research, and interactive demos, and is built on top of the
 2024, Aniket Mishra -
 `ianiket23@github.io <https://ianiket23.github.io/>`__
 
-- Website:
-- Documentation:
-- Source code: https://github.com/iAniket23/fissionmunk
-- Contributing:
-- Bug reports: https://github.com/iAniket23/fissionmunk/issues
-- Report a security vulnerability:
+- **Documentation**: https://ianiket23.github.io/FissionMunk/
+- **Source code**: https://github.com/iAniket23/fissionmunk
+- **Bug reports**: https://github.com/iAniket23/fissionmunk/issues
+
+Features
+--------
+
+- Interactive Simulation: Visualize neutron interactions with uranium in
+  real-time, with configurable parameters.
+- Modularity: Use customizable modules to add moderators, control rods,
+  and other reactor elements.
+- Educational Tool: Ideal for students and educators to explore nuclear
+  fission mechanics.
+- Open-Source: Fully open-source and extensible for customization and
+  additional functionality.
+
+Getting Started with FissionMunk
+--------------------------------
+
+FissionMunk makes it easy to simulate and visualize nuclear fission
+dynamics. To get started, follow these steps:
 
 Installation
-------------
+~~~~~~~~~~~~
 
 To install FissionMunk, use ``pip``:
 
 .. code:: bash
 
    pip install fissionmunk
+
+Set Up Your First Simulation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that you’ve installed FissionMunk, let’s create a basic simulation.
+First let’s install a visualization library such as pygame
+(``pip install pygame``). Here’s an example to help you get started:
+
+Example: Basic Fission Simulation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now let’s start by importing these libraries
+
+.. code:: python
+
+   import pygame
+
+   from fissionmunk import Core
+   from fissionmunk import Moderator
+   from fissionmunk import ControlRod
+   from fissionmunk import Fuel
+   from fissionmunk import Water
+   from fissionmunk import Material
+   from fissionmunk import Mechanics
+
+Initialize a display canvas using pygame
+
+.. code:: python
+
+   # Initialize Pygame
+   pygame.init()
+   display = pygame.display.set_mode((700, 600))
+   clock = pygame.time.Clock()
+   FPS = 60
+
+Now moving onto some fun stuff with Fissionmunk. In order to do
+simulation with fissionmunk we need to have some key items.
+
+- **Core**: Manages the main simulation environment and fuel elements.
+- **ControlRod**: Controls neutron absorption, allowing for fission rate
+  adjustments.
+- **Moderator**: Slows down neutrons to maintain optimal reaction rates.
+- **FuelElement**: Represents fuel elements, such as uranium atoms, in
+  the simulation.
+- **Neutron**: Models individual neutrons and their interactions.
+
+One thing to keep in mind is that we can tweak the probability of the
+occurance of the Fuel elements in a fuel rod. Uranium-235 doesn’t just
+occur all of a sudden in a rod but for the sake of the simulation we can
+pretend that Uranium-235 randomly occurs (refuel) in the rod.
+
+.. code:: python
+
+   # Create a core object
+   core = Core(length=700, width=600,thermal_factor=4, cold_factor=1, fast_factor=10)
+
+   moderator = Moderator(length=10, width=580, position=(600, 290), material=Material.GRAPHITE)
+
+   control_rod = ControlRod(length=10, width=600, position=(500, 0), tag="E", movement_range=[20, 580],material=Material.BORON_CARBIDE)
+
+   fuel_rod = Fuel(fuel_element_gap=10,uranium_occurance_probability=0.0001, xenon_occurance_probability=0.00001, xenon_decay_probability=0.00001, element_radius=10, width=560, position=(300, 25))
+
+We have initialized these reactor objects, and now it’s time to actually
+add these in our Core.
+
+.. code:: python
+
+   core.add_moderator_to_core(moderator)
+
+   core.add_control_rod_to_core(control_rod)
+
+   core.add_fuel_rod_to_core(fuel_rod)
+
+Now let’s add some water in our core. Water has some unique properties
+in the reactor. It acts as a neutron poison, as in, it absorbs neutron.
+One more property water have is temperature. More fission equals more
+heat which results in making the water heat up (ultimately resulting in
+water evaporating).
+
+Now let’s rather than making a big water rod, for the sake of our sample
+example, let’s make a grid of water squares.
+
+.. code:: python
+
+   for j in range(25, 580, 30):
+       water = Water(length=25, width=25, position=(450, j), coolant=True, hard_limit=30, temperature_threshold=100, material=Material.WATER)
+       core.add_water_to_core(water)
+
+Now in order to handle all the collisions and properties (like
+regulating water temperature and random neutron generation). We need
+have Mechanic object attached to our Core
+
+.. code:: python
+
+   mechanics = Mechanics(core)
+
+Now it’s time to go to our pygame loop and draw objects.
+
+.. code:: python
+
+   def game():
+       while True:
+           for event in pygame.event.get():
+               if event.type == pygame.QUIT:
+                   return
+
+           display.fill((255, 255, 255))
+
+Now let’s grab the water in our core and draw it. We draw the water only
+if it is not removed (evaporated) cause of high temperature.
+
+.. code:: python
+
+           for water in core.get_water_list():
+               pos = water.get_body().position
+               pos = int(pos.x), int(pos.y)
+               if water.removed:
+                   pygame.draw.rect(display, (255, 255, 255), (pos[0] - water.length // 2, pos[1] - water.width // 2, water.length, water.width))
+               else:
+                   pygame.draw.rect(display, (255, 80, 80), (pos[0] - water.length // 2, pos[1] - water.width // 2, water.length, water.width))
+
+Similarly let’s add fuel rod
+
+.. code:: python
+
+           for fuel_rod in core.get_fuel_rod_list():
+               for fuel_element in fuel_rod.get_fuel_elements():
+                   pos = fuel_element.get_body().position
+                   pos = int(pos.x), int(pos.y)
+                   if fuel_element.get_material() == Material.FISSILE:
+                       # blue for fissile material
+                       pygame.draw.circle(display,(48, 121, 203), pos, int(fuel_element.get_radius()))
+
+                   elif fuel_element.get_material() == Material.NON_FISSILE:
+                       # dark grey for non-fissile material
+                       pygame.draw.circle(display, (187, 187, 187), pos, int(fuel_element.get_radius()))
+
+                   elif fuel_element.get_material() == Material.XENON:
+                       # black for xenon
+                       pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
+
+It is highly probable for a neutron to cause fission when it’s speed is
+within a threshold to thermal speed. These speeds are Vec2D and
+``neutron_body.velocity`` is Vec2D and ``neutrong_body.velocity.length``
+gives magnitude of the Vec2D.
+
+.. code:: python
+
+           # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
+           for neutron in core.get_neutron_list():
+               pos = neutron.get_body().position
+               pos = int(pos.x), int(pos.y)
+               neutron_body = neutron.get_body()
+               threshold = 0.5
+               if (neutron_body.velocity.length - core.thermal_speed.length) <= threshold:
+                   # red color for thermal neutron
+                   pygame.draw.circle(display, (255, 0, 0), pos, neutron.get_radius())
+               else:
+                   # red outline for slow neutron
+                   pygame.draw.circle(display, (255, 0, 0), pos, neutron.get_radius(), 2)
+
+Adding Moderator and Control Rods (Allowing Control Rod to react to
+Keyboard Up and Down keys)
+
+.. code:: python
+
+           for moderator in core.get_moderator_list():
+               pos = moderator.get_body().position
+               pos = int(pos.x), int(pos.y)
+               pygame.draw.rect(display, (0, 0, 0), (pos[0] - moderator.get_length() // 2, pos[1] - moderator.width // 2, moderator.get_length(), moderator.width), 1)
+
+           keys = pygame.key.get_pressed()
+
+           movement = 0
+           if keys[pygame.K_UP]:
+               movement = -1
+           elif keys[pygame.K_DOWN]:
+               movement = 1
+
+           for control_rod in core.get_control_rod_list():
+
+               control_rod.move_control_rod(movement)
+               pos = control_rod.get_body().position
+               pos = int(pos.x), int(pos.y)
+               pygame.draw.rect(display, (128, 128, 128), (pos[0] - control_rod.get_length() // 2, pos[1] - control_rod.width // 2, control_rod.get_length(), control_rod.width))
+
+Now it’s time to update our simulation both pygame canvas as well as
+core simulation
+
+.. code:: python
+
+           pygame.display.update()
+           clock.tick(FPS)
+
+           # Run the physics simulation
+           mechanics.generate_random_neutron(limit=0.08)
+           mechanics.regulate_water_temperature()
+           mechanics.regulate_fuel_element_occurence()
+
+           # Step the physics simulation
+           core.get_space().step(1 / FPS)
+
+Calling the game function
+
+.. code:: python
+
+   game()
+   pygame.quit()
+
+.. figure:: media/media_sample.gif
+   :alt: Sample
+
+   Sample
+
+Hence the complete code would kinda look this
+
+.. code:: python
+
+   import pygame
+
+   from fissionmunk import Core
+   from fissionmunk import Moderator
+   from fissionmunk import ControlRod
+   from fissionmunk import Fuel
+   from fissionmunk import Water
+   from fissionmunk import Material
+
+   from fissionmunk import Mechanics
+
+   # Initialize Pygame
+   pygame.init()
+   display = pygame.display.set_mode((700, 600))
+   clock = pygame.time.Clock()
+   FPS = 60
+
+   # Create a core object
+   core = Core(length=700, width=600,thermal_factor=4, cold_factor=1, fast_factor=10)
+
+
+   moderator = Moderator(length=10, width=580, position=(600, 290), material=Material.GRAPHITE)
+   core.add_moderator_to_core(moderator)
+
+
+   control_rod = ControlRod(length=10, width=600, position=(500, 0), tag="E", movement_range=[20, 580],material=Material.BORON_CARBIDE)
+   core.add_control_rod_to_core(control_rod)
+
+   fuel_rod = Fuel(fuel_element_gap=10,uranium_occurance_probability=0.0001, xenon_occurance_probability=0.00001, xenon_decay_probability=0.00001, element_radius=10, width=560, position=(300, 25))
+   core.add_fuel_rod_to_core(fuel_rod)
+
+
+   for j in range(25, 580, 30):
+       water = Water(length=25, width=25, position=(450, j), coolant=True, hard_limit=30, temperature_threshold=100, material=Material.WATER)
+       core.add_water_to_core(water)
+
+   # Create a mechanics object
+   mechanics = Mechanics(core)
+
+   def game():
+       while True:
+           for event in pygame.event.get():
+               if event.type == pygame.QUIT:
+                   return
+
+           display.fill((255, 255, 255))
+
+           for water in core.get_water_list():
+               pos = water.get_body().position
+               pos = int(pos.x), int(pos.y)
+               if water.removed:
+                   pygame.draw.rect(display, (255, 255, 255), (pos[0] - water.length // 2, pos[1] - water.width // 2, water.length, water.width))
+               else:
+                   pygame.draw.rect(display, (255, 80, 80), (pos[0] - water.length // 2, pos[1] - water.width // 2, water.length, water.width))
+
+           for fuel_rod in core.get_fuel_rod_list():
+               for fuel_element in fuel_rod.get_fuel_elements():
+                   pos = fuel_element.get_body().position
+                   pos = int(pos.x), int(pos.y)
+                   if fuel_element.get_material() == Material.FISSILE:
+                       # blue for fissile material
+                       pygame.draw.circle(display,(48, 121, 203), pos, int(fuel_element.get_radius()))
+
+                   elif fuel_element.get_material() == Material.NON_FISSILE:
+                       # dark grey for non-fissile material
+                       pygame.draw.circle(display, (187, 187, 187), pos, int(fuel_element.get_radius()))
+
+                   elif fuel_element.get_material() == Material.XENON:
+                       # black for xenon
+                       pygame.draw.circle(display, (0, 0, 0), pos, int(fuel_element.get_radius()))
+
+           # Get the neutron's current position (convert pymunk's coordinate system to pygame's)
+           for neutron in core.get_neutron_list():
+               pos = neutron.get_body().position
+               pos = int(pos.x), int(pos.y)
+               threshold = 0.5
+               if (neutron.body.velocity.length - core.thermal_speed.length) <= threshold:
+                   # red color for thermal neutron
+                   pygame.draw.circle(display, (255, 0, 0), pos, neutron.get_radius())
+               else:
+                   # red outline for slow neutron
+                   pygame.draw.circle(display, (255, 0, 0), pos, neutron.get_radius(), 2)
+
+           for moderator in core.get_moderator_list():
+               pos = moderator.get_body().position
+               pos = int(pos.x), int(pos.y)
+               pygame.draw.rect(display, (0, 0, 0), (pos[0] - moderator.get_length() // 2, pos[1] - moderator.width // 2, moderator.get_length(), moderator.width), 1)
+
+           keys = pygame.key.get_pressed()
+
+           movement = 0
+           if keys[pygame.K_UP]:
+               movement = -1
+           elif keys[pygame.K_DOWN]:
+               movement = 1
+
+           for control_rod in core.get_control_rod_list():
+
+               control_rod.move_control_rod(movement)
+               pos = control_rod.get_body().position
+               pos = int(pos.x), int(pos.y)
+               pygame.draw.rect(display, (128, 128, 128), (pos[0] - control_rod.get_length() // 2, pos[1] - control_rod.width // 2, control_rod.get_length(), control_rod.width))
+
+           pygame.display.update()
+           clock.tick(FPS)
+
+           # Run the physics simulation
+           mechanics.generate_random_neutron(limit=0.08)
+           mechanics.regulate_water_temperature()
+           mechanics.regulate_fuel_element_occurence()
+
+           # Step the physics simulation
+           core.get_space().step(1 / FPS)
+
+   game()
+   pygame.quit()
+
+Congrats! You just made your first simulation using Fissionmunk. Well
+even though it doesnt quite look like a reactor but you can play around
+with it add more control rods and moderators and it will start
+resembling close to a 2D representation of a nuclear reactor
+
+Documentation Overview
+~~~~~~~~~~~~~~~~~~~~~~
+
+The following modules are included in FissionMunk and offer various
+simulation controls:
+
+- **Core**: Manages the main simulation environment and fuel elements.
+- **ControlRod**: Controls neutron absorption, allowing for fission rate
+  adjustments.
+- **Moderator**: Slows down neutrons to maintain optimal reaction rates.
+- **FuelElement**: Represents fuel elements, such as uranium atoms, in
+  the simulation.
+- **Neutron**: Models individual neutrons and their interactions.
+
+Refer to the full documentation for module-specific details and usage
+examples.
 
 Contributing
 ------------
@@ -63,3 +434,6 @@ License
 
 .. |Python Version| image:: https://img.shields.io/badge/python-3.8%2B-blue
 .. |License| image:: https://img.shields.io/badge/license-MIT-green
+.. |PyPI version| image:: https://badge.fury.io/py/fissionmunk.svg
+.. |API Reference| image:: https://img.shields.io/badge/API%20Reference-Docs-blue
+   :target: https://ianiket23.github.io/FissionMunk/
