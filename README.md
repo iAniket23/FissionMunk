@@ -175,7 +175,7 @@ Adding Moderator and Control Rods (Allowing Control Rod to react to Keyboard Up 
 ```
 
 Now it's time to update our simulation both pygame canvas as well as core simulation
-```
+```python
         pygame.display.update()
         clock.tick(FPS)
 
@@ -314,7 +314,7 @@ game()
 pygame.quit()
 ```
 
-Congrats! You just made your fist simulation using Fissionmunk.
+Congrats! You just made your first simulation using Fissionmunk.
 Well even though it doesnt quite look like a reactor but you can play around with it add more control rods and moderators and it will start resembling close to a 2D representation of a nuclear reactor
 
 ### Documentation Overview
