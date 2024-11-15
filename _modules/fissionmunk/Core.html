@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fissionmunk.Core &mdash; FissionMunk 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FissionMunk
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">fissionmunk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FissionMunk</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fissionmunk.Core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fissionmunk.Core</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Core class</span>
+<span class="kn">import</span> <span class="nn">pymunk</span>
+
+<div class="viewcode-block" id="Core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core">[docs]</a>
+<span class="k">class</span> <span class="nc">Core</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Core class is used to create the core of the reactor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">neutron_speed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">thermal_factor</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">cold_factor</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">fast_factor</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The constructor of the Core class.</span>
+
+<span class="sd">        :param length: The length of the core.</span>
+<span class="sd">        :type length: float</span>
+<span class="sd">        :param width: The width of the core.</span>
+<span class="sd">        :type width: float</span>
+<span class="sd">        :param neutron_speed: The speed of the neutron, defaults to (40, 0)</span>
+<span class="sd">        :type neutron_speed: tuple, optional</span>
+<span class="sd">        :param thermal_factor: factor to multiply the neutron speed to get the thermal speed, defaults to 50</span>
+<span class="sd">        :type thermal_factor: int, optional</span>
+<span class="sd">        :param cold_factor: factor to multiply the neutron speed to get the cold speed, defaults to 10</span>
+<span class="sd">        :type cold_factor: int, optional</span>
+<span class="sd">        :param fast_factor: factor to multiply the neutron speed to get the fast speed, defaults to 100</span>
+<span class="sd">        :type fast_factor: int, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+
+        <span class="c1"># Neutron speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fast_speed</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">neutron_speed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neutron_speed</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">fast_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thermal_speed</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">neutron_speed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neutron_speed</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">thermal_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cold_speed</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">neutron_speed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neutron_speed</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">cold_factor</span>
+
+        <span class="c1"># Space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Space</span><span class="p">()</span>
+
+        <span class="c1"># Lists of objects in the core</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neutron_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moderator_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_rod_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuel_rod_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">water_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Create core boundaries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_core_boundaries</span><span class="p">()</span>
+
+    <span class="c1"># Create core boundaries</span>
+<div class="viewcode-block" id="Core.create_core_boundaries">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.create_core_boundaries">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_core_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to create the core boundaries.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create the core boundaries</span>
+        <span class="n">core_boundaries</span> <span class="o">=</span> <span class="p">[</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+                           <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+                           <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+                           <span class="n">pymunk</span><span class="o">.</span><span class="n">Segment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">static_body</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">boundary</span> <span class="ow">in</span> <span class="n">core_boundaries</span><span class="p">:</span>
+            <span class="n">boundary</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">boundary</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+    <span class="c1"># Add and remove neutron from the core</span>
+<div class="viewcode-block" id="Core.add_neutron_to_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.add_neutron_to_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_neutron_to_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neutron</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to add the neutron to the core.</span>
+
+<span class="sd">        :param neutron: The neutron object to be added to the core.</span>
+<span class="sd">        :type neutron: Neutron</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">neutron</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neutron_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.remove_neutron_from_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.remove_neutron_from_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_neutron_from_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neutron</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to remove the neutron from the core.</span>
+
+<span class="sd">        :param neutron: The neutron object to be removed from the core.</span>
+<span class="sd">        :type neutron: Neutron</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">neutron</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neutron_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+        <span class="n">neutron</span><span class="o">.</span><span class="n">remove_neutron</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.add_water_to_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.add_water_to_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_water_to_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">water</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to add the water to the core.</span>
+
+<span class="sd">        :param water: The water object to be added to the core.</span>
+<span class="sd">        :type water: Water</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">water</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">water_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">water</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.remove_water_from_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.remove_water_from_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_water_from_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">water</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to remove the water from the core.</span>
+
+<span class="sd">        :param water: The water object to be removed from the core.</span>
+<span class="sd">        :type water: Water</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">water</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">water</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">water_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">water</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+    <span class="c1"># Add and remove moderator from the core</span>
+<div class="viewcode-block" id="Core.add_moderator_to_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.add_moderator_to_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_moderator_to_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moderator</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to add the moderator to the core.</span>
+
+<span class="sd">        :param moderator: The moderator object to be added to the core.</span>
+<span class="sd">        :type moderator: Moderator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">moderator</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">moderator</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moderator_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moderator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.remove_moderator_from_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.remove_moderator_from_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_moderator_from_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moderator</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to remove the moderator from the core.</span>
+
+<span class="sd">        :param moderator: The moderator object to be removed from the core.</span>
+<span class="sd">        :type moderator: Moderator</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">moderator</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">moderator</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moderator_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">moderator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># Add and remove control rod from the core</span>
+<div class="viewcode-block" id="Core.add_control_rod_to_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.add_control_rod_to_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_control_rod_to_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control_rod</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to add the control rod to the core.</span>
+
+<span class="sd">        :param control_rod: The control rod object to be added to the core.</span>
+<span class="sd">        :type control_rod: ControlRod</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">control_rod</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">control_rod</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_rod_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">control_rod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.remove_control_rod_from_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.remove_control_rod_from_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_control_rod_from_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control_rod</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to remove the control rod from the core.</span>
+
+<span class="sd">        :param control_rod: The control rod object to be removed from the core.</span>
+<span class="sd">        :type control_rod: ControlRod</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">control_rod</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">control_rod</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_rod_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">control_rod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># Add and remove fuel rod from the core</span>
+<div class="viewcode-block" id="Core.add_fuel_rod_to_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.add_fuel_rod_to_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_fuel_rod_to_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fuel_rod</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to add the fuel rod to the core.</span>
+
+<span class="sd">        :param fuel_rod: The fuel rod object to be added to the core.</span>
+<span class="sd">        :type fuel_rod: FuelRod</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">fuel_element</span> <span class="ow">in</span> <span class="n">fuel_rod</span><span class="o">.</span><span class="n">get_fuel_elements</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">fuel_element</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">fuel_element</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fuel_rod_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fuel_rod</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.remove_fuel_rod_from_core">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.remove_fuel_rod_from_core">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_fuel_rod_from_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fuel_rod</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to remove the fuel rod from the core.</span>
+
+<span class="sd">        :param fuel_rod: The fuel rod object to be removed from the core.</span>
+<span class="sd">        :type fuel_rod: FuelRod</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">fuel_element</span> <span class="ow">in</span> <span class="n">fuel_rod</span><span class="o">.</span><span class="n">get_fuel_elements</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fuel_element</span><span class="o">.</span><span class="n">get_body</span><span class="p">(),</span> <span class="n">fuel_element</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fuel_rod_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fuel_rod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># Getters and setters</span>
+<div class="viewcode-block" id="Core.get_water_list">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_water_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_water_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to get the list of water in the core.</span>
+
+<span class="sd">        :return: water_list</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">water_list</span></div>
+
+
+<div class="viewcode-block" id="Core.get_neutron_list">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_neutron_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_neutron_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to get the list of neutron in the core.</span>
+
+<span class="sd">        :return: neutron_list</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_list</span></div>
+
+
+<div class="viewcode-block" id="Core.get_moderator_list">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_moderator_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_moderator_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to get the list of moderator in the core.</span>
+
+<span class="sd">        :return: moderator_list</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moderator_list</span></div>
+
+
+<div class="viewcode-block" id="Core.get_control_rod_list">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_control_rod_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_control_rod_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to get the list of control rod in the core.</span>
+
+<span class="sd">        :return: control_rod_list</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_rod_list</span></div>
+
+
+<div class="viewcode-block" id="Core.get_fuel_rod_list">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_fuel_rod_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_fuel_rod_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to get the list of fuel rod in the core.</span>
+
+<span class="sd">        :return: fuel_rod_list</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuel_rod_list</span></div>
+
+
+<div class="viewcode-block" id="Core.get_space">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_space">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method is used to get the space of the core.</span>
+
+<span class="sd">        :return: space</span>
+<span class="sd">        :rtype: pymunk.Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span></div>
+
+
+<div class="viewcode-block" id="Core.set_fast_speed">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.set_fast_speed">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_fast_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is used to set the fast speed of the neutron.</span>
+
+<span class="sd">        :param speed: The speed of the neutron.</span>
+<span class="sd">        :type speed: tuple</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fast_speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Core.get_fast_speed">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_fast_speed">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_fast_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is used to get the fast speed of the neutron.</span>
+
+<span class="sd">        :return: fast_speed</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fast_speed</span></div>
+
+
+<div class="viewcode-block" id="Core.get_thermal_speed">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_thermal_speed">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_thermal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is used to get the thermal speed of the neutron.</span>
+
+<span class="sd">        :return: thermal_speed</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thermal_speed</span></div>
+
+
+<div class="viewcode-block" id="Core.get_cold_speed">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.get_cold_speed">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_cold_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is used to get the cold speed of the neutron.</span>
+
+<span class="sd">        :return: cold_speed</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cold_speed</span></div>
+
+
+<div class="viewcode-block" id="Core.set_thermal_speed">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.set_thermal_speed">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_thermal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is used to set the thermal speed of the neutron.</span>
+
+<span class="sd">        :param speed: The speed of the neutron.</span>
+<span class="sd">        :type speed: tuple</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thermal_speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Core.set_cold_speed">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Core.Core.set_cold_speed">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_cold_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is used to set the cold speed of the neutron.</span>
+
+<span class="sd">        :param speed: The speed of the neutron.</span>
+<span class="sd">        :type speed: tuple</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cold_speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aniket Mishra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
