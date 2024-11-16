@@ -2,7 +2,7 @@
 
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![PyPI version](https://badge.fury.io/py/fissionmunk.svg)
+![PyPI version](https://badge.fury.io/py/fissionmunk.svg?cache-bust=1)
 [![API Reference](https://img.shields.io/badge/API%20Reference-Docs-blue)](https://ianiket23.github.io/FissionMunk/)
 
 **FissionMunk** is a lightweight 2D physics open source python library designed to simulate nuclear fission reactor mechanics. It enables users to visualize interactions between neutrons and uranium atoms, providing valuable insights into fission dynamics with customizable parameters, such as neutron occurrence probabilities, moderators, and control rods. FissionMunk is ideal for educational simulations, nuclear physics research, and interactive demos, and is built on top of the [Pymunk](http://www.pymunk.org/) library.
