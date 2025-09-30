@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fissionmunk.Water &mdash; FissionMunk 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FissionMunk
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">fissionmunk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FissionMunk</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fissionmunk.Water</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fissionmunk.Water</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pymunk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.Material</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialType</span> <span class="k">as</span> <span class="n">Material</span>
+
+<div class="viewcode-block" id="Water">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Water</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class represents water in the simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">body_to_water</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span><span class="n">coolant</span> <span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hard_limit</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">temperature_threshold</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">material</span> <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">WATER</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method initializes the water object.</span>
+
+<span class="sd">        :param length: The length of the water.</span>
+<span class="sd">        :type length: float</span>
+<span class="sd">        :param width: The width of the water.</span>
+<span class="sd">        :type width: float</span>
+<span class="sd">        :param position: The position of the water.</span>
+<span class="sd">        :type position: tuple</span>
+<span class="sd">        :param coolant: The coolant of the water, defaults to True</span>
+<span class="sd">        :type coolant: bool, optional</span>
+<span class="sd">        :param hard_limit: The hard limit for the temperature of the water allowed, defaults to 30</span>
+<span class="sd">        :type hard_limit: int, optional</span>
+<span class="sd">        :param temperature_threshold: The temperature threshold of the water, defaults to 100</span>
+<span class="sd">        :type temperature_threshold: int, optional</span>
+<span class="sd">        :param material: The material of the water, defaults to Material.WATER</span>
+<span class="sd">        :type material: MaterialType, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Water dimensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coolant</span> <span class="o">=</span> <span class="n">coolant</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature_threshold</span> <span class="o">=</span> <span class="n">temperature_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hard_limit</span> <span class="o">=</span> <span class="n">hard_limit</span>
+
+        <span class="k">assert</span> <span class="n">material</span> <span class="ow">in</span> <span class="n">Material</span><span class="p">,</span> <span class="s2">&quot;Invalid material&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">material</span>
+
+        <span class="c1"># Create the water body and shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_water</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
+
+        <span class="c1"># Set the collision type of the water</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="mi">11</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_neutrons_interacting</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">removed</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">body_to_water</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="c1"># Create the water</span>
+<div class="viewcode-block" id="Water.create_water">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.create_water">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_water</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method creates the water.</span>
+
+<span class="sd">        :return: The body and shape of the water.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create the water body</span>
+        <span class="n">water_body</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span><span class="n">body_type</span><span class="o">=</span><span class="n">pymunk</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">STATIC</span><span class="p">)</span>
+        <span class="n">water_shape</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Poly</span><span class="o">.</span><span class="n">create_box</span><span class="p">(</span><span class="n">water_body</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
+
+        <span class="c1"># Set the sensor of the water, which is used to detect collision</span>
+        <span class="n">water_shape</span><span class="o">.</span><span class="n">sensor</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">water_body</span><span class="p">,</span> <span class="n">water_shape</span></div>
+
+
+<div class="viewcode-block" id="Water.change_temperature">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.change_temperature">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">change_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method changes the temperature of the water.</span>
+
+<span class="sd">        :param amount: The amount to change the temperature of the water.</span>
+<span class="sd">        :type amount: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coolant</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_threshold</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">hard_limit</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_threshold</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">+=</span> <span class="n">amount</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_threshold</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_water</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_threshold</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">hard_limit</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">removed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">coolant</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recreate_water</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Water.turn_on_coolant">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.turn_on_coolant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">turn_on_coolant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method turns on the coolant of the water.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coolant</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Water.turn_off_coolant">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.turn_off_coolant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">turn_off_coolant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method turns off the coolant of the water.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coolant</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Water.remove_water">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.remove_water">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_water</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method removes the water from the simulation.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">removed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_collision_type</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Water.increase_number_of_neutrons_interacting">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.increase_number_of_neutrons_interacting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">increase_number_of_neutrons_interacting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_neutrons_interacting</span> <span class="o">+=</span> <span class="n">amount</span></div>
+
+
+<div class="viewcode-block" id="Water.decrease_number_of_neutrons_interacting">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.decrease_number_of_neutrons_interacting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decrease_number_of_neutrons_interacting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_neutrons_interacting</span> <span class="o">-=</span> <span class="n">amount</span></div>
+
+
+<div class="viewcode-block" id="Water.recreate_water">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.recreate_water">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recreate_water</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method recreates the water in the simulation.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">removed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_collision_type</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Water.change_collision_type">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.change_collision_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">change_collision_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision_type</span> <span class="o">=</span> <span class="mi">11</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method changes the collision type of the water.</span>
+
+<span class="sd">        :param collision_type: The collision type of the water, defaults to 11</span>
+<span class="sd">        :type collision_type: int, optional</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span> <span class="o">=</span> <span class="n">collision_type</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Water.get_collision_type">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.get_collision_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_collision_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method returns the collision type of the water.</span>
+
+<span class="sd">        :return: The collision type of the water.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">collision_type</span></div>
+
+
+<div class="viewcode-block" id="Water.get_position">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.get_position">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method returns the position of the water.</span>
+
+<span class="sd">        :return: The position of the water.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">position</span></div>
+
+
+<div class="viewcode-block" id="Water.get_temperature">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.get_temperature">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method returns the temperature of the water.</span>
+
+<span class="sd">        :return: The temperature of the water.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span></div>
+
+
+<div class="viewcode-block" id="Water.get_body">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.get_body">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method returns the body of the water.</span>
+
+<span class="sd">        :return: The body of the water.</span>
+<span class="sd">        :rtype: pymunk.Body</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span></div>
+
+
+<div class="viewcode-block" id="Water.get_shape">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.get_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method returns the shape of the water.</span>
+
+<span class="sd">        :return: The shape of the water.</span>
+<span class="sd">        :rtype: pymunk.Poly</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span></div>
+
+
+<div class="viewcode-block" id="Water.get_number_of_neutrons_interacting">
+<a class="viewcode-back" href="../../index.html#fissionmunk.Water.Water.get_number_of_neutrons_interacting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_neutrons_interacting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_neutrons_interacting</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aniket Mishra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

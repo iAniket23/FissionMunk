@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fissionmunk.mechanics &mdash; FissionMunk 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FissionMunk
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">fissionmunk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FissionMunk</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fissionmunk.mechanics</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fissionmunk.mechanics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymunk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.Neutron</span><span class="w"> </span><span class="kn">import</span> <span class="n">Neutron</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.Water</span><span class="w"> </span><span class="kn">import</span> <span class="n">Water</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.FuelElement</span><span class="w"> </span><span class="kn">import</span> <span class="n">FuelElement</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.Fuel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fuel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.Material</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialType</span> <span class="k">as</span> <span class="n">Material</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_probability</span>
+<span class="c1"># Mechanics class</span>
+<div class="viewcode-block" id="Mechanics">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Mechanics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Mechanics class is responsible for handling the physics of the simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The constructor for the Mechanics class.</span>
+
+<span class="sd">        :param core: The core object, defaults to None</span>
+<span class="sd">        :type core: Core, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core</span> <span class="o">=</span> <span class="n">core</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_space</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle_offset</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">water_absorption</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+        <span class="c1"># Set the collision handler for neutron and moderator</span>
+        <span class="n">NMC_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">NMC_handler</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_moderator_collision</span>
+
+        <span class="c1"># Collision handler for neutron and control rod</span>
+        <span class="n">NCRC_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">NCRC_handler</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_control_rod_collision</span>
+
+        <span class="c1"># Fuel element collision handler</span>
+        <span class="n">NFEC_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">NFEC_handler</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_fuel_element_collision</span>
+
+        <span class="c1"># Xenon collision handler</span>
+        <span class="n">NX_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">NX_handler</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_xenon_collision</span>
+
+        <span class="c1"># Boundary collision handler</span>
+        <span class="n">NB_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">NB_handler</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_boundary_collision</span>
+        <span class="n">NB_handler</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_boundary_collision</span>
+
+        <span class="n">NW_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">add_collision_handler</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+        <span class="n">NW_handler</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_water_collision_add</span>
+        <span class="n">NW_handler</span><span class="o">.</span><span class="n">separate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neutron_water_collision_remove</span>
+
+<div class="viewcode-block" id="Mechanics.neutron_water_collision_add">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_water_collision_add">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_water_collision_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-water collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">get_probability</span><span class="p">()</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">water_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+            <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">water_absorption</span><span class="p">:</span>
+                <span class="n">neutron</span> <span class="o">=</span> <span class="n">Neutron</span><span class="o">.</span><span class="n">body_to_neutron</span><span class="p">[(</span><span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">neutron_shape</span><span class="p">)]</span>
+                <span class="n">neutron</span><span class="o">.</span><span class="n">remove_neutron</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">remove_neutron_from_core</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+
+            <span class="n">water</span> <span class="o">=</span> <span class="n">Water</span><span class="o">.</span><span class="n">body_to_water</span><span class="p">[(</span><span class="n">water_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">water_shape</span><span class="p">)]</span>
+            <span class="n">water</span><span class="o">.</span><span class="n">increase_number_of_neutrons_interacting</span><span class="p">()</span>
+
+            <span class="n">water</span><span class="o">.</span><span class="n">change_temperature</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.neutron_water_collision_remove">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_water_collision_remove">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_water_collision_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-water collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">water_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+            <span class="n">water</span> <span class="o">=</span> <span class="n">Water</span><span class="o">.</span><span class="n">body_to_water</span><span class="p">[(</span><span class="n">water_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">water_shape</span><span class="p">)]</span>
+            <span class="n">water</span><span class="o">.</span><span class="n">decrease_number_of_neutrons_interacting</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.regulate_water_temperature">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.regulate_water_temperature">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">regulate_water_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to regulate the water temperature</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">water</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">get_water_list</span><span class="p">():</span>
+            <span class="n">water</span><span class="o">.</span><span class="n">change_temperature</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.regulate_fuel_element_occurence">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.regulate_fuel_element_occurence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">regulate_fuel_element_occurence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to regulate the fuel element occurence</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">fuel_rod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">get_fuel_rod_list</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">fuel_element</span> <span class="ow">in</span> <span class="n">fuel_rod</span><span class="o">.</span><span class="n">get_fuel_elements</span><span class="p">():</span>
+                <span class="n">fuel_element</span><span class="o">.</span><span class="n">change_material</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.neutron_boundary_collision">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_boundary_collision">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_boundary_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-boundary collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">boundary_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+            <span class="n">neutron</span> <span class="o">=</span> <span class="n">Neutron</span><span class="o">.</span><span class="n">body_to_neutron</span><span class="p">[(</span><span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">neutron_shape</span><span class="p">)]</span>
+            <span class="n">neutron</span><span class="o">.</span><span class="n">remove_neutron</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">remove_neutron_from_core</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(e)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.neutron_moderator_collision">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_moderator_collision">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_moderator_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-moderator collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">moderator_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+            <span class="c1"># Get the neutron&#39;s speed</span>
+            <span class="n">current_velocity</span> <span class="o">=</span> <span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">velocity</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_velocity</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">fast_speed</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+                <span class="c1"># Get the collision normal, which represents the moderator surface at the collision point</span>
+                <span class="n">collision_normal</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">contact_point_set</span><span class="o">.</span><span class="n">normal</span>
+
+                <span class="c1"># Calculate the reflection of the current velocity across the collision normal</span>
+                <span class="n">dot_product</span> <span class="o">=</span> <span class="n">current_velocity</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">collision_normal</span><span class="p">)</span>
+                <span class="n">reflected_direction</span> <span class="o">=</span> <span class="n">current_velocity</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dot_product</span> <span class="o">*</span> <span class="n">collision_normal</span>
+                <span class="n">reflected_direction</span> <span class="o">=</span> <span class="n">reflected_direction</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>  <span class="c1"># Normalize to get direction only</span>
+
+                <span class="c1"># Set the reflected direction to thermal speed</span>
+                <span class="n">thermal_speed_magnitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">thermal_speed</span><span class="o">.</span><span class="n">length</span>
+                <span class="n">new_velocity</span> <span class="o">=</span> <span class="n">reflected_direction</span> <span class="o">*</span> <span class="n">thermal_speed_magnitude</span>
+
+                <span class="c1"># Apply the new velocity to the neutron</span>
+                <span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">new_velocity</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(e)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.neutron_control_rod_collision">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_control_rod_collision">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_control_rod_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-control rod collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">control_rod_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+
+            <span class="n">neutron</span> <span class="o">=</span> <span class="n">Neutron</span><span class="o">.</span><span class="n">body_to_neutron</span><span class="p">[(</span><span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">neutron_shape</span><span class="p">)]</span>
+            <span class="n">neutron</span><span class="o">.</span><span class="n">remove_neutron</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">remove_neutron_from_core</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(e)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.neutron_fuel_element_collision">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_fuel_element_collision">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_fuel_element_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-fuel element collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">fuel_element_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+            <span class="n">neutron</span> <span class="o">=</span> <span class="n">Neutron</span><span class="o">.</span><span class="n">body_to_neutron</span><span class="p">[(</span><span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">neutron_shape</span><span class="p">)]</span>
+
+            <span class="n">fuel_element</span> <span class="o">=</span> <span class="n">FuelElement</span><span class="o">.</span><span class="n">body_to_fuel_element</span><span class="p">[(</span><span class="n">fuel_element_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">fuel_element_shape</span><span class="p">)]</span>
+
+            <span class="n">neutron_velocity</span> <span class="o">=</span> <span class="n">neutron</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">velocity</span>
+
+            <span class="n">neutron_speed</span> <span class="o">=</span> <span class="n">neutron_velocity</span><span class="o">.</span><span class="n">length</span>
+
+            <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">neutron_speed</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">thermal_speed</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">fuel_element</span><span class="o">.</span><span class="n">set_material</span><span class="p">(</span><span class="n">Material</span><span class="o">.</span><span class="n">NON_FISSILE</span><span class="p">)</span>
+                <span class="c1"># Original direction</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="n">neutron_velocity</span><span class="o">.</span><span class="n">normalized</span><span class="p">()</span>
+
+                <span class="c1"># Small angle offset in radians for deviation (5 degrees)</span>
+                <span class="n">small_angle_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle_offset</span>
+
+                <span class="c1"># Calculate the two slightly different directions</span>
+                <span class="n">x1</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">small_angle_offset</span><span class="p">)</span> <span class="o">-</span> <span class="n">direction</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">small_angle_offset</span><span class="p">)</span>
+                <span class="n">y1</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">small_angle_offset</span><span class="p">)</span> <span class="o">+</span> <span class="n">direction</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">small_angle_offset</span><span class="p">)</span>
+                <span class="n">new_direction_n1</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+
+                <span class="n">x2</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">small_angle_offset</span><span class="p">)</span> <span class="o">-</span> <span class="n">direction</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="n">small_angle_offset</span><span class="p">)</span>
+                <span class="n">y2</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="n">small_angle_offset</span><span class="p">)</span> <span class="o">+</span> <span class="n">direction</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">small_angle_offset</span><span class="p">)</span>
+                <span class="n">new_direction_n2</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+
+                <span class="c1"># Set the new speed for both directions to fast speed</span>
+                <span class="n">fast_speed_magnitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">fast_speed</span><span class="o">.</span><span class="n">length</span>
+                <span class="n">new_speed_n1</span> <span class="o">=</span> <span class="n">new_direction_n1</span> <span class="o">*</span> <span class="n">fast_speed_magnitude</span>
+                <span class="n">new_speed_n2</span> <span class="o">=</span> <span class="n">new_direction_n2</span> <span class="o">*</span> <span class="n">fast_speed_magnitude</span>
+
+                <span class="n">neutron1</span> <span class="o">=</span> <span class="n">Neutron</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">new_speed_n1</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_position</span><span class="p">(),</span> <span class="n">mass</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_mass</span><span class="p">(),</span> <span class="n">radius</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_radius</span><span class="p">())</span>
+                <span class="n">neutron2</span> <span class="o">=</span> <span class="n">Neutron</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">new_speed_n2</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_position</span><span class="p">(),</span> <span class="n">mass</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_mass</span><span class="p">(),</span> <span class="n">radius</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_radius</span><span class="p">())</span>
+
+                <span class="k">if</span> <span class="n">get_probability</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+                    <span class="n">new_speed_n3</span> <span class="o">=</span> <span class="o">-</span><span class="n">direction</span> <span class="o">*</span> <span class="n">fast_speed_magnitude</span>
+                    <span class="n">neutron3</span> <span class="o">=</span> <span class="n">Neutron</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">new_speed_n3</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_position</span><span class="p">(),</span> <span class="n">mass</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_mass</span><span class="p">(),</span> <span class="n">radius</span><span class="o">=</span><span class="n">neutron</span><span class="o">.</span><span class="n">get_radius</span><span class="p">())</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">add_neutron_to_core</span><span class="p">(</span><span class="n">neutron3</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">add_neutron_to_core</span><span class="p">(</span><span class="n">neutron1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">add_neutron_to_core</span><span class="p">(</span><span class="n">neutron2</span><span class="p">)</span>
+
+                <span class="n">neutron</span><span class="o">.</span><span class="n">remove_neutron</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">remove_neutron_from_core</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(e)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.neutron_xenon_collision">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.neutron_xenon_collision">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neutron_xenon_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arbiter</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to handle neutron-xenon collision</span>
+
+<span class="sd">        :param arbiter: arbiter object</span>
+<span class="sd">        :type arbiter: Arbiter</span>
+<span class="sd">        :param space: space object</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :param data: data object</span>
+<span class="sd">        :type data: Data</span>
+<span class="sd">        :return: True if successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">neutron_shape</span><span class="p">,</span> <span class="n">xenon_shape</span> <span class="o">=</span> <span class="n">arbiter</span><span class="o">.</span><span class="n">shapes</span>
+            <span class="n">current_velocity</span> <span class="o">=</span> <span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">velocity</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_velocity</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">thermal_speed</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+                <span class="n">neutron</span> <span class="o">=</span> <span class="n">Neutron</span><span class="o">.</span><span class="n">body_to_neutron</span><span class="p">[(</span><span class="n">neutron_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">neutron_shape</span><span class="p">)]</span>
+                <span class="n">xenon</span> <span class="o">=</span> <span class="n">FuelElement</span><span class="o">.</span><span class="n">body_to_fuel_element</span><span class="p">[(</span><span class="n">xenon_shape</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">xenon_shape</span><span class="p">)]</span>
+                <span class="n">neutron</span><span class="o">.</span><span class="n">remove_neutron</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">remove_neutron_from_core</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+                <span class="n">xenon</span><span class="o">.</span><span class="n">set_material</span><span class="p">(</span><span class="n">Material</span><span class="o">.</span><span class="n">NON_FISSILE</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Mechanics.generate_random_neutron">
+<a class="viewcode-back" href="../../index.html#fissionmunk.mechanics.Mechanics.generate_random_neutron">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_neutron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to generate a random neutron</span>
+
+<span class="sd">        :param limit: The limit for the probability</span>
+<span class="sd">        :type limit: float</span>
+<span class="sd">        :return: The neutron object if successful, False otherwise</span>
+<span class="sd">        :rtype: Neutron</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">get_probability</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="n">neutron_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">thermal_speed</span>
+                <span class="n">random_angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">random_angle</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">random_angle</span><span class="p">)</span>
+                <span class="n">new_direction</span> <span class="o">=</span> <span class="n">pymunk</span><span class="o">.</span><span class="n">Vec2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                <span class="n">neutron_speed</span> <span class="o">=</span> <span class="n">new_direction</span> <span class="o">*</span> <span class="n">neutron_speed</span><span class="o">.</span><span class="n">length</span>
+                <span class="n">neutron_position</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">length</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
+                <span class="n">neutron</span> <span class="o">=</span> <span class="n">Neutron</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">neutron_speed</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">neutron_position</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">add_neutron_to_core</span><span class="p">(</span><span class="n">neutron</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(e)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aniket Mishra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
